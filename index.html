@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ست الكل - Set El Kol | برنامج وصفات الطبخ</title>
+<link rel="preconnect" href="https://www.themealdb.com">
+<style>
+/* ===== CSS VARIABLES ===== */
+:root{
+  --primary:#E8553A;--primary-dark:#C94028;--primary-light:#FF7A65;
+  --secondary:#2D9B4E;--secondary-dark:#1E7A3A;--secondary-light:#4CBB6B;
+  --accent:#F5A623;--accent-light:#FFD166;
+  --bg:#FFF9F2;--bg-card:#FFFFFF;--bg-dark:#2C1810;
+  --text:#2C1810;--text-light:#6B5B50;--text-muted:#A09080;
+  --gold:#D4A853;--gold-light:#F0D89A;
+  --border:#E8DDD0;--shadow:0 4px 20px rgba(44,24,16,.08);
+  --shadow-lg:0 12px 40px rgba(44,24,16,.12);
+  --radius:16px;--radius-sm:10px;--radius-lg:24px;
+  --font:"Segoe UI","Tahoma","Arial",sans-serif;
+  --transition:all .3s cubic-bezier(.4,0,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-5px) rotate(2deg)}75%{transform:translateY(3px) rotate(-1deg)}}
+.animate-in{animation:fadeInUp .6s ease both}
+
+/* ===== HERO / CREATOR SECTION ===== */
+.hero{
+  background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 40%,#8B2020 100%);
+  padding:32px 24px 28px;text-align:center;color:#fff;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='50' height='50' viewBox='0 0 50 50' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='25' cy='25' r='1.5' fill='%23ffffff06'/%3E%3C/svg%3E") repeat;
+}
+.hero-content{position:relative;z-index:2;max-width:800px;margin:0 auto}
+.creator{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.creator-avatar{
+  width:80px;height:80px;border-radius:50%;border:3px solid rgba(255,255,255,.4);
+  background:linear-gradient(135deg,var(--gold-light),var(--gold));
+  display:flex;align-items:center;justify-content:center;
+  font-size:36px;font-weight:700;color:var(--bg-dark);flex-shrink:0;
+  box-shadow:0 4px 20px rgba(0,0,0,.2);
+}
+.creator-info{text-align:right}
+.creator-info .creator-label{font-size:12px;opacity:.7;letter-spacing:2px;margin-bottom:2px}
+.creator-info .creator-name{font-size:24px;font-weight:700;letter-spacing:1px}
+.creator-info .creator-title{font-size:13px;opacity:.8;margin-top:2px}
+
+.app-title{
+  font-size:clamp(32px,6vw,52px);font-weight:800;margin:12px 0 4px;
+  text-shadow:0 3px 20px rgba(0,0,0,.2);letter-spacing:2px;
+}
+.app-subtitle{font-size:16px;opacity:.85;margin-bottom:6px}
+.app-desc{font-size:13px;opacity:.65;max-width:500px;margin:0 auto}
+
+/* ===== LANGUAGE & SETTINGS BAR ===== */
+.top-bar{
+  background:var(--bg-card);border-bottom:1px solid var(--border);
+  padding:10px 24px;display:flex;align-items:center;justify-content:center;gap:12px;
+  position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.04);flex-wrap:wrap;
+}
+.lang-btn{
+  padding:6px 16px;border-radius:20px;font-size:13px;
+  background:var(--bg);border:1px solid var(--border);color:var(--text-light);
+  cursor:pointer;transition:var(--transition);font-family:var(--font);
+}
+.lang-btn.active,.lang-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* ===== MAIN CONTAINER ===== */
+.container{max-width:900px;margin:0 auto;padding:24px 16px}
+
+/* ===== FILTER SECTION ===== */
+.filters{margin-bottom:24px}
+.filter-group{margin-bottom:16px}
+.filter-label{
+  font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;
+  display:flex;align-items:center;gap:8px;
+}
+.filter-label .icon{font-size:20px}
+.filter-options{display:flex;gap:8px;flex-wrap:wrap}
+.filter-btn{
+  padding:10px 22px;border-radius:var(--radius-sm);font-size:14px;
+  background:var(--bg-card);border:2px solid var(--border);color:var(--text);
+  cursor:pointer;transition:var(--transition);font-family:var(--font);
+  font-weight:500;
+}
+.filter-btn:hover{border-color:var(--primary-light);color:var(--primary)}
+.filter-btn.active{
+  background:var(--primary);color:#fff;border-color:var(--primary);
+  box-shadow:0 4px 12px rgba(232,85,58,.3);
+}
+.filter-btn.active-green{
+  background:var(--secondary);color:#fff;border-color:var(--secondary);
+  box-shadow:0 4px 12px rgba(45,155,78,.3);
+}
+
+/* ===== INGREDIENTS INPUT ===== */
+.input-section{margin-bottom:24px}
+.input-box{
+  background:var(--bg-card);border-radius:var(--radius);padding:24px;
+  box-shadow:var(--shadow);border:2px solid var(--border);
+  transition:var(--transition);
+}
+.input-box:focus-within{border-color:var(--primary-light);box-shadow:var(--shadow-lg)}
+.input-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.input-header .fridge-icon{font-size:28px;animation:float 4s ease-in-out infinite}
+.input-header h3{font-size:18px;color:var(--text)}
+.input-header p{font-size:12px;color:var(--text-muted)}
+
+.ingredient-input-wrap{
+  display:flex;gap:10px;margin-bottom:12px;
+}
+.ingredient-input{
+  flex:1;padding:14px 18px;border-radius:var(--radius-sm);
+  border:2px solid var(--border);font-size:16px;font-family:var(--font);
+  background:var(--bg);color:var(--text);transition:var(--transition);
+  text-align:right;
+}
+.ingredient-input:focus{outline:none;border-color:var(--primary-light);box-shadow:0 0 0 3px rgba(232,85,58,.1)}
+.ingredient-input::placeholder{color:var(--text-muted)}
+.add-btn{
+  padding:14px 20px;border-radius:var(--radius-sm);
+  background:var(--secondary);color:#fff;font-size:16px;
+  border:none;cursor:pointer;transition:var(--transition);font-family:var(--font);
+  font-weight:600;white-space:nowrap;
+}
+.add-btn:hover{background:var(--secondary-dark);transform:scale(1.03)}
+
+.tags{display:flex;gap:8px;flex-wrap:wrap;min-height:36px}
+.tag{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 14px;border-radius:20px;font-size:13px;
+  background:var(--green-pale,#E8F5E9);color:var(--secondary-dark);
+  font-weight:500;animation:slideIn .3s ease both;cursor:default;
+}
+.tag .remove{
+  cursor:pointer;font-size:16px;opacity:.5;transition:var(--transition);
+  line-height:1;
+}
+.tag .remove:hover{opacity:1;color:var(--primary)}
+
+.search-row{display:flex;gap:10px;margin-top:16px}
+.search-btn{
+  flex:1;padding:16px;border-radius:var(--radius-sm);
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff;font-size:18px;font-weight:700;border:none;
+  cursor:pointer;transition:var(--transition);font-family:var(--font);
+  letter-spacing:1px;
+  box-shadow:0 4px 16px rgba(232,85,58,.3);
+}
+.search-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(232,85,58,.4)}
+.search-btn:active{transform:translateY(0)}
+.clear-btn{
+  padding:16px 24px;border-radius:var(--radius-sm);
+  background:var(--bg);color:var(--text-light);font-size:14px;
+  border:2px solid var(--border);cursor:pointer;transition:var(--transition);
+  font-family:var(--font);font-weight:600;
+}
+.clear-btn:hover{border-color:var(--primary-light);color:var(--primary)}
+
+/* ===== LOADING ===== */
+.loading{
+  text-align:center;padding:60px 20px;display:none;
+}
+.loading.show{display:block}
+.spinner{
+  width:48px;height:48px;border:4px solid var(--border);
+  border-top-color:var(--primary);border-radius:50%;
+  animation:spin .8s linear infinite;margin:0 auto 16px;
+}
+.loading p{color:var(--text-muted);font-size:15px}
+
+/* ===== RESULTS ===== */
+.results{margin-top:8px}
+.results-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--border);
+}
+.results-header h2{font-size:22px;color:var(--text);display:flex;align-items:center;gap:8px}
+.results-count{
+  background:var(--primary);color:#fff;font-size:12px;
+  padding:2px 10px;border-radius:12px;font-weight:700;
+}
+
+.recipe-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.recipe-card{
+  background:var(--bg-card);border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow);transition:var(--transition);cursor:pointer;
+  border:2px solid transparent;
+}
+.recipe-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--primary-light)}
+.recipe-img{
+  height:200px;overflow:hidden;position:relative;
+  background:linear-gradient(135deg,#f0e0d0,#e8d0c0);
+}
+.recipe-img img{width:100%;height:100%;object-fit:cover;transition:var(--transition)}
+.recipe-card:hover .recipe-img img{transform:scale(1.08)}
+.recipe-category{
+  position:absolute;top:10px;right:10px;
+  background:rgba(0,0,0,.6);backdrop-filter:blur(6px);
+  color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;
+  font-weight:600;
+}
+.recipe-area{
+  position:absolute;top:10px;left:10px;
+  background:var(--accent);color:var(--bg-dark);
+  font-size:11px;padding:4px 10px;border-radius:6px;
+  font-weight:700;
+}
+.recipe-body{padding:16px}
+.recipe-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;line-height:1.4}
+.recipe-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.recipe-tags span{
+  font-size:11px;padding:3px 8px;border-radius:12px;
+  background:var(--bg);color:var(--text-muted);border:1px solid var(--border);
+}
+.match-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:12px;padding:4px 10px;border-radius:8px;
+  font-weight:700;
+}
+.match-badge.exact{background:#E8F5E9;color:var(--secondary-dark)}
+.match-badge.suggest{background:#FFF3E0;color:#E65100}
+.recipe-preview{
+  font-size:13px;color:var(--text-muted);line-height:1.6;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  margin-top:8px;
+}
+
+/* ===== RECIPE MODAL ===== */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
+  z-index:1000;display:none;align-items:center;justify-content:center;
+  padding:20px;overflow-y:auto;
+}
+.modal-overlay.show{display:flex}
+.modal{
+  background:var(--bg-card);border-radius:var(--radius-lg);
+  max-width:700px;width:100%;max-height:90vh;overflow-y:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+  animation:fadeInUp .4s ease both;
+}
+.modal-header{position:relative}
+.modal-header img{width:100%;height:300px;object-fit:cover;border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+.modal-close{
+  position:absolute;top:16px;left:16px;width:40px;height:40px;
+  border-radius:50%;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);
+  color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:var(--transition);border:none;
+}
+.modal-close:hover{background:var(--primary);transform:scale(1.1)}
+.modal-body{padding:28px}
+.modal-body h2{font-size:24px;margin-bottom:6px;color:var(--text)}
+.modal-meta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.modal-meta span{
+  font-size:12px;padding:4px 12px;border-radius:8px;
+  background:var(--bg);color:var(--text-muted);border:1px solid var(--border);
+}
+.modal-section{margin-bottom:24px}
+.modal-section h3{
+  font-size:17px;color:var(--primary-dark);margin-bottom:12px;
+  display:flex;align-items:center;gap:8px;
+  padding-bottom:8px;border-bottom:2px solid var(--border);
+}
+.ingredient-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ingredient-list li{
+  font-size:14px;color:var(--text);padding:8px 12px;
+  background:var(--bg);border-radius:var(--radius-sm);
+  display:flex;align-items:center;gap:8px;
+}
+.ingredient-list li .dot{
+  width:8px;height:8px;border-radius:50%;background:var(--secondary);
+  flex-shrink:0;
+}
+.ingredient-list li .measure{color:var(--text-muted);font-weight:600;margin-right:auto}
+.instructions{font-size:14px;line-height:2;color:var(--text-light);white-space:pre-line}
+.video-link{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 24px;border-radius:var(--radius-sm);
+  background:var(--primary);color:#fff;font-size:14px;font-weight:600;
+  transition:var(--transition);margin-top:8px;
+}
+.video-link:hover{background:var(--primary-dark);transform:translateY(-2px)}
+
+/* ===== EMPTY & ERROR ===== */
+.empty-state{
+  text-align:center;padding:60px 20px;
+}
+.empty-state .empty-icon{font-size:64px;margin-bottom:16px;display:block;animation:bounce 2s ease-in-out infinite}
+.empty-state h3{font-size:20px;color:var(--text);margin-bottom:8px}
+.empty-state p{color:var(--text-muted);font-size:14px;max-width:400px;margin:0 auto}
+
+.error-msg{
+  background:#FDECEA;color:#C62828;padding:16px 20px;
+  border-radius:var(--radius-sm);font-size:14px;
+  display:none;align-items:center;gap:10px;margin-top:16px;
+  border:1px solid #F5C6CB;
+}
+.error-msg.show{display:flex}
+
+/* ===== SUGGESTION BOX ===== */
+.suggest-box{
+  background:linear-gradient(135deg,#FFF8E1,#FFF3E0);
+  border:2px solid #FFE0B2;border-radius:var(--radius-sm);
+  padding:12px 16px;margin-top:10px;
+}
+.suggest-box .suggest-title{
+  font-size:13px;font-weight:700;color:#E65100;margin-bottom:6px;
+  display:flex;align-items:center;gap:6px;
+}
+.suggest-box .suggest-text{font-size:13px;color:var(--text-light);line-height:1.6}
+.suggest-box .highlight{color:var(--primary);font-weight:700}
+
+/* ===== FOOTER ===== */
+.app-footer{
+  text-align:center;padding:40px 24px;margin-top:40px;
+  border-top:2px solid var(--border);color:var(--text-muted);font-size:13px;
+}
+.app-footer .footer-brand{font-size:20px;margin-bottom:8px}
+.app-footer a{color:var(--primary);text-decoration:none}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:600px){
+  .creator{flex-direction:column;text-align:center}
+  .creator-info{text-align:center}
+  .ingredient-input-wrap{flex-direction:column}
+  .search-row{flex-direction:column}
+  .ingredient-list{grid-template-columns:1fr}
+  .recipe-grid{grid-template-columns:1fr}
+  .modal-header img{height:200px}
+  .filter-options{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HERO / CREATOR ===== -->
+<header class="hero">
+  <div class="hero-content">
+    <div class="creator">
+      <div class="creator-avatar">EH</div>
+      <div class="creator-info">
+        <div class="creator-label" data-i18n="ideaOwner">صاحب الفكرة</div>
+        <div class="creator-name">Emad Hamdy</div>
+        <div class="creator-title" data-i18n="creatorDesc">فكرة وتصميم تطبيقات ذكية</div>
+      </div>
+    </div>
+    <div class="app-title">👩‍🍳 ست الكل</div>
+    <div class="app-subtitle" data-i18n="appSubtitle">برنامج وصفات الطبخ الذكي</div>
+    <div class="app-desc" data-i18n="appDesc">أدخل المكونات المتاحة في مطبخك وسنجد لك ألذ الوصفات!</div>
+  </div>
+</header>
+
+<!-- ===== LANGUAGE BAR ===== -->
+<div class="top-bar">
+  <button class="lang-btn active" onclick="setLang('ar')">🇸🇦 العربية</button>
+  <button class="lang-btn" onclick="setLang('en')">🇬🇧 English</button>
+  <button class="lang-btn" onclick="setLang('fr')">🇫🇷 Français</button>
+</div>
+
+<div class="container">
+
+  <!-- ===== CUISINE TYPE ===== -->
+  <div class="filters">
+    <div class="filter-group">
+      <div class="filter-label"><span class="icon">🌍</span> <span data-i18n="cuisineType">اتجاه وجنسية الطبخ</span></div>
+      <div class="filter-options" id="cuisineFilters">
+        <button class="filter-btn active" data-cuisine="all" onclick="setCuisine(this,'all')" data-i18n="all">الكل</button>
+        <button class="filter-btn" data-cuisine="eastern" onclick="setCuisine(this,'eastern')" data-i18n="eastern">🍳 شرقي</button>
+        <button class="filter-btn" data-cuisine="western" onclick="setCuisine(this,'western')" data-i18n="western">🍝 غربي</button>
+        <button class="filter-btn" data-cuisine="asian" onclick="setCuisine(this,'asian')" data-i18n="asian">🍜 آسيوي</button>
+      </div>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label"><span class="icon">🍽️</span> <span data-i18n="dishType">نوع الطبق</span></div>
+      <div class="filter-options" id="categoryFilters">
+        <button class="filter-btn active-green" data-cat="all" onclick="setCategory(this,'all')" data-i18n="allDishes">الكل</button>
+        <button class="filter-btn" data-cat="food" onclick="setCategory(this,'food')" data-i18n="food">🥘 طعام</button>
+        <button class="filter-btn" data-cat="dessert" onclick="setCategory(this,'dessert')" data-i18n="dessert">🍰 حلويات</button>
+        <button class="filter-btn" data-cat="drink" onclick="setCategory(this,'drink')" data-i18n="drink">🥤 عصائر</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== INGREDIENTS INPUT ===== -->
+  <div class="input-section">
+    <div class="input-box">
+      <div class="input-header">
+        <span class="fridge-icon">🧊</span>
+        <div>
+          <h3 data-i18n="inputTitle">المكونات المتاحة لديك الآن</h3>
+          <p data-i18n="inputHint">أدخل مكوناً واحداً واضغط إضافة، أو اكتبها مفصولة بفواصل</p>
+        </div>
+      </div>
+      <div class="ingredient-input-wrap">
+        <input type="text" class="ingredient-input" id="ingredientInput"
+               placeholder="مثال: باذنجان، طماطم، بصل..."
+               onkeydown="if(event.key==='Enter')addIngredient()">
+        <button class="add-btn" onclick="addIngredient()" data-i18n="addBtn">➕ إضافة</button>
+      </div>
+      <div class="tags" id="tagsContainer"></div>
+      <div class="search-row">
+        <button class="search-btn" onclick="searchRecipes()" data-i18n="searchBtn">🔍 ابحث عن الوصفات</button>
+        <button class="clear-btn" onclick="clearAll()" data-i18n="clearBtn">🗑️ مسح الكل</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ERROR ===== -->
+  <div class="error-msg" id="errorMsg">
+    <span>⚠️</span>
+    <span id="errorText"></span>
+  </div>
+
+  <!-- ===== LOADING ===== -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p data-i18n="searching">جاري البحث عن ألذ الوصفات... 🔍</p>
+  </div>
+
+  <!-- ===== RESULTS ===== -->
+  <div class="results" id="results" style="display:none">
+    <div class="results-header">
+      <h2>📋 <span data-i18n="results">النتائج</span> <span class="results-count" id="resultsCount">0</span></h2>
+    </div>
+    <div class="recipe-grid" id="recipeGrid"></div>
+  </div>
+
+  <!-- ===== EMPTY STATE ===== -->
+  <div class="empty-state" id="emptyState" style="display:none">
+    <span class="empty-icon">🍽️</span>
+    <h3 data-i18n="emptyTitle">لم نجد وصفات مطابقة</h3>
+    <p data-i18n="emptyText">جرّب إضافة مكونات أخرى أو تغيير نوع المطبخ!</p>
+  </div>
+
+</div>
+
+<!-- ===== RECIPE MODAL ===== -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="app-footer">
+  <div class="footer-brand">👩‍🍳 ست الكل - Set El Kol</div>
+  <p data-i18n="footer">فكرة: <strong>Emad Hamdy</strong> | البيانات: TheMealDB API | جميع الوصفات مجانية</p>
+</footer>
+
+<script>
+// ===== STATE =====
+let ingredients = [];
+let currentCuisine = 'all';
+let currentCategory = 'all';
+let currentLang = 'ar';
+let allMeals = [];
+
+// ===== SYNONYMS / ALIAS MAP =====
+const aliasMap = {
+  // Arabic aliases
+  'بندورة':'tomato','طماطم':'tomato','طمطم':'tomato',
+  'باذنجان':'eggplant','بيتنجان':'eggplant','اسود':'eggplant',
+  'بطاطس':'potato','بطاطا':'potato','بطاطا حلوة':'sweet potato',
+  'بصل':'onion','بصلة':'onion','كراث':'shallot',
+  'ثوم':'garlic','توم':'garlic',
+  'دجاج':'chicken','فرخة':'chicken','فراخ':'chicken','جاج':'chicken',
+  'لحمة':'beef','لحمة مفرومة':'ground beef','مفرومة':'ground beef',
+  'سمك':'fish','فيليه':'fish fillet',
+  'جمبري':'shrimp','روبيان':'shrimp',
+  'أرز':'rice','رز':'rice','ارز':'rice',
+  'معكرونة':'pasta','مكرونة':'pasta','باستا':'pasta','سباغيتي':'spaghetti',
+  'جبنة':'cheese','جبن':'cheese','جبنة بيضاء':'white cheese',
+  'بيض':'egg','بيضة':'egg','بيضات':'egg',
+  'حليب':'milk','لبن':'yogurt','زبادي':'yogurt','روب':'yogurt',
+  'سمن':'ghee','سمنة':'ghee','زبدة':'butter',
+  'زيت':'oil','زيت زيتون':'olive oil',
+  'ملح':'salt','فلفل':'pepper','فلفل أسود':'black pepper',
+  'كمون':'cumin','كزبرة':'coriander','قرفة':'cinnamon',
+  'زنجبيل':'ginger','كركم':'turmeric','هيل':'cardamom',
+  'ليمون':'lemon','عصرة ليمون':'lemon',
+  'برتقال':'orange','عصرة برتقال':'orange',
+  'تفاح':'apple','موز':'banana','فراولة':'strawberry',
+  'عنب':'grapes','مانجو':'mango','أناناس':'pineapple',
+  'خيار':'cucumber','كوسة':'zucchini','كوسا':'zucchini',
+  'جزر':'carrot','فلفل أخضر':'green pepper','فلفل أحمر':'red pepper',
+  'خس':'lettuce','سلطة':'salad','بقدونس':'parsley',
+  'نعناع':'mint','شبت':'dill','كزبرة خضراء':'coriander',
+  'طحين':'flour','دقيق':'flour','فرينة':'flour',
+  'سكر':'sugar','عسل':'honey',
+  'خل':'vinegar','طحينة':'tahini','صلصة':'sauce',
+  'ماء':'water','ماية':'water',
+  'شاي':'tea','قهوة':'coffee',
+  'جوز الهند':'coconut','لوز':'almond','فستق':'pistachio',
+  'تمر':'dates','تين':'fig',
+  'فاصوليا':'beans','عدس':'lentils','حمص':'chickpeas',
+  'لوبيا':'black eyed peas','بازلاء':'peas',
+  'ملفوف':'cabbage','قرنبيط':'cauliflower','سبانخ':'spinach',
+  'فجل':'radish','فلفل حار':'chili pepper',
+  // English aliases
+  'chicken breast':'chicken','chicken thigh':'chicken',
+  'beef steak':'beef','ground meat':'ground beef',
+  'pasta noodles':'pasta','spaghetti pasta':'spaghetti',
+  'olive oil':'olive oil','veggie oil':'vegetable oil',
+  'white onion':'onion','red onion':'onion','spring onion':'green onion',
+  'garlic cloves':'garlic',
+};
+
+// ===== AREA → CUISINE MAPPING =====
+const areaToCuisine = {
+  'eastern':['Egyptian','Moroccan','Turkish','Lebanese','Palestinian',
+             'Syrian','Iraqi','Saudi Arabian','Iranian','Tunisian','Algerian','Libyan','Jordanian','Kuwaiti'],
+  'western':['American','British','French','Italian','Spanish','Canadian',
+             'Dutch','Greek','Irish','Portuguese','Austrian','Croatian','Polish','Norwegian',
+             'Russian','Ukrainian','German','Belgian','Swiss','Danish','Finnish','Hungarian',
+             'Romanian','Czech','Slovenian','Swedish'],
+  'asian':['Chinese','Japanese','Thai','Vietnamese','Indian','Korean',
+           'Malaysian','Filipino','Indonesian','Singaporean','Bangladeshi','Sri Lankan','Nepalese']
+};
+
+// ===== CATEGORY → MEALDB CATEGORY MAPPING =====
+const catToMealDb = {
+  'food':['Beef','Chicken','Lamb','Pork','Seafood','Side','Starter','Breakfast','Goat','Vegan','Vegetarian','Pasta'],
+  'dessert':['Dessert'],
+  'drink':['Miscellaneous'] // TheMealDB doesn't have drinks; we handle this specially
+};
+
+// ===== I18N =====
+const i18n = {
+  ar:{
+    ideaOwner:'صاحب الفكرة',creatorDesc:'فكرة وتصميم تطبيقات ذكية',
+    appSubtitle:'برنامج وصفات الطبخ الذكي',
+    appDesc:'أدخل المكونات المتاحة في مطبخك وسنجد لك ألذ الوصفات!',
+    cuisineType:'اتجاه وجنسية الطبيخ',all:'الكل',eastern:'🍳 شرقي',western:'🍝 غربي',asian:'🍜 آسيوي',
+    dishType:'نوع الطبق',allDishes:'الكل',food:'🥘 طعام',dessert:'🍰 حلويات',drink:'🥤 عصائر',
+    inputTitle:'المكونات المتاحة لديك الآن',
+    inputHint:'أدخل مكوناً واحداً واضغط إضافة، أو اكتبها مفصولة بفواصل',
+    addBtn:'➕ إضافة',searchBtn:'🔍 ابحث عن الوصفات',clearBtn:'🗑️ مسح الكل',
+    searching:'جاري البحث عن ألذ الوصفات... 🔍',
+    results:'النتائج',
+    emptyTitle:'لم نجد وصفات مطابقة',
+    emptyText:'جرّب إضافة مكونات أخرى أو تغيير نوع المطبخ!',
+    footer:'فكرة: <strong>Emad Hamdy</strong> | البيانات: TheMealDB API | جميع الوصفات مجانية',
+    exactMatch:'وصفة مطابقة ✅',suggestion:'اقتراح 💡',
+    addThis:'إضافة هذا لتحضيره:',
+    ingredients:'المكونات',steps:'طريقة التحضير',video:'🎥 شاهد فيديو',
+    category:'التصنيف',area:'المطبخ',
+    noResults:'لم يتم العثور على وصفات. تأكد من كتابة المكونات بالإنجليزية أو حاول مكونات أخرى.',
+    enterIngredient:'الرجاء إدخال مكون واحد على الأقل!',
+    fetchError:'حدث خطأ أثناء البحث. يرجى المحاولة مرة أخرى.',
+  },
+  en:{
+    ideaOwner:'Idea by',creatorDesc:'Smart app ideas & design',
+    appSubtitle:'Smart Recipe Finder',
+    appDesc:'Enter available ingredients and we\'ll find delicious recipes!',
+    cuisineType:'Cuisine Type',all:'All',eastern:'🍳 Eastern',western:'🍝 Western',asian:'🍜 Asian',
+    dishType:'Dish Type',allDishes:'All',food:'🥘 Food',dessert:'🍰 Desserts',drink:'🥤 Drinks',
+    inputTitle:'Available Ingredients in Your Kitchen',
+    inputHint:'Type an ingredient and press Add, or separate multiple with commas',
+    addBtn:'➕ Add',searchBtn:'🔍 Find Recipes',clearBtn:'🗑️ Clear All',
+    searching:'Searching for delicious recipes... 🔍',
+    results:'Results',
+    emptyTitle:'No matching recipes found',
+    emptyText:'Try adding more ingredients or changing the cuisine type!',
+    footer:'Idea: <strong>Emad Hamdy</strong> | Data: TheMealDB API | All recipes are free',
+    exactMatch:'Exact Match ✅',suggestion:'Suggestion 💡',
+    addThis:'Add this to make it:',
+    ingredients:'Ingredients',steps:'Instructions',video:'🎥 Watch Video',
+    category:'Category',area:'Cuisine',
+    noResults:'No recipes found. Try entering ingredients in English or use different ones.',
+    enterIngredient:'Please enter at least one ingredient!',
+    fetchError:'Error fetching recipes. Please try again.',
+  },
+  fr:{
+    ideaOwner:'Idée par',creatorDesc:'Idées et conception d\'apps intelligentes',
+    appSubtitle:'Chercheur de Recettes Intelligent',
+    appDesc:'Entrez les ingrédients disponibles et nous trouverons de délicieuses recettes!',
+    cuisineType:'Type de Cuisine',all:'Tous',eastern:'🍳 Orientale',western:'🍝 Occidentale',asian:'🍜 Asiatique',
+    dishType:'Type de Plat',allDishes:'Tous',food:'🥘 Plat',dessert:'🍰 Desserts',drink:'🥤 Boissons',
+    inputTitle:'Ingrédients Disponibles dans Votre Cuisine',
+    inputHint:'Tapez un ingrédient et appuyez sur Ajouter, ou séparez par des virgules',
+    addBtn:'➕ Ajouter',searchBtn:'🔍 Chercher',clearBtn:'🗑️ Effacer',
+    searching:'Recherche de délicieuses recettes... 🔍',
+    results:'Résultats',
+    emptyTitle:'Aucune recette trouvée',
+    emptyText:'Essayez d\'ajouter d\'autres ingrédients ou changez le type de cuisine!',
+    footer:'Idée: <strong>Emad Hamdy</strong> | Données: TheMealDB API | Toutes les recettes sont gratuites',
+    exactMatch:'Correspond Exacte ✅',suggestion:'Suggestion 💡',
+    addThis:'Ajoutez ceci pour le préparer:',
+    ingredients:'Ingrédients',steps:'Instructions',video:'🎥 Regarder la Vidéo',
+    category:'Catégorie',area:'Cuisine',
+    noResults:'Aucune recette trouvée. Essayez des ingrédients en anglais ou changez-les.',
+    enterIngredient:'Veuillez entrer au moins un ingrédiment!',
+    fetchError:'Erreur lors de la recherche. Veuillez réessayer.',
+  },
+};
+
+// ===== LANGUAGE =====
+function setLang(lang){
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  const dir = lang==='ar'?'rtl':'ltr';
+  document.documentElement.dir=dir;
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key=el.dataset.i18n;
+    if(i18n[lang][key]) el.innerHTML=i18n[lang][key];
+  });
+  // Update placeholder
+  const inp=document.getElementById('ingredientInput');
+  inp.placeholder=lang==='ar'?'مثال: باذنجان، طماطم، بصل...':lang==='en'?'e.g. chicken, tomato, onion...':'ex: poulet, tomate, oignon...';
+  // Re-render results if any
+  if(allMeals.length>0) renderResults(allMeals);
+}
+
+// ===== FILTERS =====
+function setCuisine(btn,cuisine){
+  currentCuisine=cuisine;
+  document.querySelectorAll('#cuisineFilters .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function setCategory(btn,cat){
+  currentCategory=cat;
+  document.querySelectorAll('#categoryFilters .filter-btn').forEach(b=>b.classList.remove('active-green'));
+  btn.classList.add('active-green');
+}
+
+// ===== INGREDIENT TAGS =====
+function addIngredient(){
+  const input=document.getElementById('ingredientInput');
+  let val=input.value.trim();
+  if(!val) return;
+  // Split by comma or Arabic comma
+  const parts=val.split(/[,،]/).map(s=>s.trim()).filter(Boolean);
+  parts.forEach(p=>{
+    const lower=p.toLowerCase();
+    if(!ingredients.includes(lower)){
+      ingredients.push(lower);
+    }
+  });
+  input.value='';
+  renderTags();
+}
+function removeIngredient(idx){
+  ingredients.splice(idx,1);
+  renderTags();
+}
+function renderTags(){
+  const container=document.getElementById('tagsContainer');
+  container.innerHTML=ingredients.map((ing,i)=>{
+    const arName = Object.keys(aliasMap).find(k=>aliasMap[k]===ing)||ing;
+    return `<span class="tag">${currentLang==='ar'?arName:ing}<span class="remove" onclick="removeIngredient(${i})">✕</span></span>`;
+  }).join('');
+}
+function clearAll(){
+  ingredients=[];
+  renderTags();
+  document.getElementById('results').style.display='none';
+  document.getElementById('emptyState').style.display='none';
+  document.getElementById('errorMsg').classList.remove('show');
+  allMeals=[];
+}
+
+// ===== NORMALIZE INGREDIENT =====
+function normalize(ing){
+  const lower=ing.toLowerCase().trim();
+  return aliasMap[lower]||lower;
+}
+
+// ===== SEARCH =====
+async function searchRecipes(){
+  if(ingredients.length===0){
+    showError(i18n[currentLang].enterIngredient);
+    return;
+  }
+  hideError();
+  document.getElementById('results').style.display='none';
+  document.getElementById('emptyState').style.display='none';
+  document.getElementById('loading').classList.add('show');
+
+  const normalized = ingredients.map(normalize);
+  try{
+    // Search by each ingredient from TheMealDB
+    const allResults = new Map();
+    for(const ing of normalized){
+      const res = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${encodeURIComponent(ing)}`);
+      const data = await res.json();
+      if(data.meals){
+        data.meals.forEach(m=>{
+          if(!allResults.has(m.idMeal)){
+            allResults.set(m.idMeal, {id:m.idMeal, name:m.strMeal, thumb:m.strMealThumb, matchCount:1, matchedIngredients:[ing]});
+          } else {
+            const existing = allResults.get(m.idMeal);
+            existing.matchCount++;
+            existing.matchedIngredients.push(ing);
+          }
+        });
+      }
+    }
+
+    // Sort by match count
+    let sorted = [...allResults.values()].sort((a,b)=>b.matchCount-a.matchCount);
+
+    // Filter by cuisine and category (need full details for that)
+    // Fetch details for top results to filter
+    const topIds = sorted.slice(0,30).map(m=>m.id);
+    const detailedMeals = [];
+    for(const id of topIds){
+      try{
+        const r = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+        const d = await r.json();
+        if(d.meals && d.meals[0]) detailedMeals.push(d.meals[0]);
+      }catch(e){}
+    }
+
+    // Apply cuisine filter
+    let filtered = detailedMeals;
+    if(currentCuisine!=='all'){
+      const allowed = areaToCuisine[currentCuisine]||[];
+      filtered = filtered.filter(m=>allowed.includes(m.strArea));
+    }
+    // Apply category filter
+    if(currentCategory!=='all'){
+      if(currentCategory==='drink'){
+        // TheMealDB has no drink category; show nothing or show Miscellaneous
+        filtered = filtered.filter(m=>false); // no drinks in TheMealDB
+      } else {
+        const allowedCats = catToMealDb[currentCategory]||[];
+        filtered = filtered.filter(m=>allowedCats.includes(m.strCategory));
+      }
+    }
+
+    // Separate exact matches vs suggestions
+    const exact = [];
+    const suggestions = [];
+    filtered.forEach(meal=>{
+      const mealIngs = [];
+      for(let i=1;i<=20;i++){
+        const ing = meal[`strIngredient${i}`];
+        if(ing && ing.trim()) mealIngs.push(ing.trim().toLowerCase());
+      }
+      const userNorm = [...new Set(normalized)];
+      const hasAll = userNorm.every(u=>mealIngs.some(m=>m.includes(u)||u.includes(m)));
+      if(hasAll){
+        exact.push({...meal, isExact:true});
+      } else {
+        // Check if we need just 1 more ingredient
+        const missing = mealIngs.filter(mi=>!userNorm.some(u=>mi.includes(u)||u.includes(mi)));
+        if(missing.length<=3){
+          suggestions.push({...meal, isExact:false, missing:missing.slice(0,3)});
+        }
+      }
+    });
+
+    // Limit suggestions to 3
+    const limitedSuggestions = suggestions.slice(0,3);
+    allMeals = [...exact, ...limitedSuggestions];
+
+    document.getElementById('loading').classList.remove('show');
+
+    if(allMeals.length===0){
+      // If filters were too strict, show without filters
+      if(currentCuisine!=='all'||currentCategory!=='all'){
+        // Show from all detailed without filter
+        const fallbackExact = [];
+        const fallbackSugg = [];
+        detailedMeals.forEach(meal=>{
+          const mealIngs = [];
+          for(let i=1;i<=20;i++){
+            const ing = meal[`strIngredient${i}`];
+            if(ing && ing.trim()) mealIngs.push(ing.trim().toLowerCase());
+          }
+          const userNorm = [...new Set(normalized)];
+          const hasAll = userNorm.every(u=>mealIngs.some(m=>m.includes(u)||u.includes(m)));
+          if(hasAll) fallbackExact.push({...meal,isExact:true});
+          else{
+            const miss=mealIngs.filter(mi=>!userNorm.some(u=>mi.includes(u)||u.includes(mi)));
+            if(miss.length<=3) fallbackSugg.push({...meal,isExact:false,missing:miss.slice(0,3)});
+          }
+        });
+        allMeals=[...fallbackExact,...fallbackSugg.slice(0,3)];
+        if(allMeals.length>0){renderResults(allMeals);return;}
+      }
+      document.getElementById('emptyState').style.display='block';
+    } else {
+      renderResults(allMeals);
+    }
+
+  }catch(err){
+    document.getElementById('loading').classList.remove('show');
+    showError(i18n[currentLang].fetchError);
+    console.error(err);
+  }
+}
+
+// ===== RENDER RESULTS =====
+function renderResults(meals){
+  const grid = document.getElementById('recipeGrid');
+  grid.innerHTML = '';
+  document.getElementById('results').style.display='block';
+  document.getElementById('emptyState').style.display='none';
+  document.getElementById('resultsCount').textContent = meals.length;
+
+  meals.forEach((meal,idx)=>{
+    const ings = [];
+    for(let i=1;i<=20;i++){
+      const ing = meal[`strIngredient${i}`];
+      const ms = meal[`strMeasure${i}`];
+      if(ing && ing.trim()) ings.push({ingredient:ing.trim(), measure:(ms||'').trim()});
+    }
+
+    const card = document.createElement('div');
+    card.className='recipe-card animate-in';
+    card.style.animationDelay=`${idx*0.1}s`;
+    card.onclick=()=>openModal(meal, ings);
+
+    const matchBadge = meal.isExact
+      ? `<span class="match-badge exact">${i18n[currentLang].exactMatch}</span>`
+      : `<span class="match-badge suggest">${i18n[currentLang].suggestion}</span>`;
+
+    let suggestHtml='';
+    if(!meal.isExact && meal.missing){
+      suggestHtml=`<div class="suggest-box">
+        <div class="suggest-title">💡 ${i18n[currentLang].addThis}</div>
+        <div class="suggest-text">${meal.missing.map(m=>`<span class="highlight">${m}</span>`).join(' + ')}</div>
+      </div>`;
+    }
+
+    const preview = (meal.strInstructions||'').substring(0,100)+'...';
+
+    card.innerHTML=`
+      <div class="recipe-img">
+        <img src="${meal.strMealThumb}/preview" alt="${meal.strMeal}" loading="lazy">
+        <span class="recipe-category">${meal.strCategory||''}</span>
+        <span class="recipe-area">${meal.strArea||''}</span>
+      </div>
+      <div class="recipe-body">
+        ${matchBadge}
+        <div class="recipe-title">${meal.strMeal}</div>
+        <div class="recipe-tags">
+          ${meal.strCategory?`<span>${meal.strCategory}</span>`:''}
+          ${meal.strArea?`<span>${meal.strArea}</span>`:''}
+          <span>${ings.length} ${currentLang==='ar'?'مكون':'ingredients'}</span>
+        </div>
+        <div class="recipe-preview">${preview}</div>
+        ${suggestHtml}
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ===== MODAL =====
+function openModal(meal, ings){
+  const modal = document.getElementById('modalContent');
+  const steps = (meal.strInstructions||'').split(/\r\n|\n/).filter(Boolean);
+
+  modal.innerHTML=`
+    <div class="modal-header">
+      <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <h2>${meal.strMeal}</h2>
+      <div class="modal-meta">
+        <span>📂 ${i18n[currentLang].category}: ${meal.strCategory||'-'}</span>
+        <span>🌍 ${i18n[currentLang].area}: ${meal.strArea||'-'}</span>
+      </div>
+      <div class="modal-section">
+        <h3>🧾 ${i18n[currentLang].ingredients}</h3>
+        <ul class="ingredient-list">
+          ${ings.map(ig=>`<li><span class="dot"></span><span>${ig.ingredient}</span><span class="measure">${ig.measure}</span></li>`).join('')}
+        </ul>
+      </div>
+      <div class="modal-section">
+        <h3>📝 ${i18n[currentLang].steps}</h3>
+        <div class="instructions">${steps.map((s,i)=>`${currentLang==='ar'?'الخطوة':'Step'} ${i+1}: ${s}`).join('\n\n')}</div>
+      </div>
+      ${meal.strYoutube?`<a href="${meal.strYoutube}" target="_blank" class="video-link">${i18n[currentLang].video} ▶</a>`:''}
+      ${meal.strSource?`<a href="${meal.strSource}" target="_blank" class="video-link" style="background:var(--secondary)">🔗 ${currentLang==='ar'?'المصدر الأصلي':'Source'}</a>`:''}
+    </div>`;
+  document.getElementById('modalOverlay').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('show');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+// ===== ERROR =====
+function showError(msg){
+  document.getElementById('errorText').textContent=msg;
+  document.getElementById('errorMsg').classList.add('show');
+}
+function hideError(){
+  document.getElementById('errorMsg').classList.remove('show');
+}
+</script>
+
+</body>
+</html>
