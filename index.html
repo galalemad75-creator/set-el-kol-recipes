@@ -105,6 +105,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
   background:var(--secondary);color:#fff;border-color:var(--secondary);
   box-shadow:0 4px 12px rgba(45,155,78,.3);
 }
+.filter-btn.disabled-btn{
+  opacity:.45;cursor:not-allowed;pointer-events:none;
+}
 
 /* ===== INGREDIENTS INPUT ===== */
 .input-section{margin-bottom:24px}
@@ -162,6 +165,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
 }
 .search-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(232,85,58,.4)}
 .search-btn:active{transform:translateY(0)}
+.search-btn:disabled{opacity:.6;cursor:wait;transform:none}
 .clear-btn{
   padding:16px 24px;border-radius:var(--radius-sm);
   background:var(--bg);color:var(--text-light);font-size:14px;
@@ -290,7 +294,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
   display:inline-flex;align-items:center;gap:8px;
   padding:12px 24px;border-radius:var(--radius-sm);
   background:var(--primary);color:#fff;font-size:14px;font-weight:600;
-  transition:var(--transition);margin-top:8px;
+  text-decoration:none;transition:var(--transition);margin-top:8px;margin-left:8px;
 }
 .video-link:hover{background:var(--primary-dark);transform:translateY(-2px)}
 
@@ -322,6 +326,25 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
 }
 .suggest-box .suggest-text{font-size:13px;color:var(--text-light);line-height:1.6}
 .suggest-box .highlight{color:var(--primary);font-weight:700}
+
+/* ===== FILTER-RELAXED BANNER ===== */
+.filter-relaxed{
+  background:linear-gradient(135deg,#E3F2FD,#BBDEFB);
+  border:2px solid #90CAF9;border-radius:var(--radius-sm);
+  padding:12px 16px;margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;font-size:14px;color:#1565C0;
+}
+.filter-relaxed .info-icon{font-size:20px}
+
+/* ===== DRINK NOTICE ===== */
+.drink-notice{
+  background:linear-gradient(135deg,#FFF8E1,#FFF3E0);
+  border:2px solid #FFE0B2;border-radius:var(--radius);
+  padding:32px 24px;text-align:center;margin-top:16px;
+}
+.drink-notice .drink-icon{font-size:48px;margin-bottom:12px;display:block}
+.drink-notice h3{font-size:18px;color:#E65100;margin-bottom:8px}
+.drink-notice p{font-size:14px;color:var(--text-muted);max-width:400px;margin:0 auto}
 
 /* ===== FOOTER ===== */
 .app-footer{
@@ -365,9 +388,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
 
 <!-- ===== LANGUAGE BAR ===== -->
 <div class="top-bar">
-  <button class="lang-btn active" onclick="setLang('ar')">🇸🇦 العربية</button>
-  <button class="lang-btn" onclick="setLang('en')">🇬🇧 English</button>
-  <button class="lang-btn" onclick="setLang('fr')">🇫🇷 Français</button>
+  <button class="lang-btn active" onclick="setLang('ar',this)">🇸🇦 العربية</button>
+  <button class="lang-btn" onclick="setLang('en',this)">🇬🇧 English</button>
+  <button class="lang-btn" onclick="setLang('fr',this)">🇫🇷 Français</button>
 </div>
 
 <div class="container">
@@ -412,7 +435,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
       </div>
       <div class="tags" id="tagsContainer"></div>
       <div class="search-row">
-        <button class="search-btn" onclick="searchRecipes()" data-i18n="searchBtn">🔍 ابحث عن الوصفات</button>
+        <button class="search-btn" id="searchBtn" onclick="searchRecipes()" data-i18n="searchBtn">🔍 ابحث عن الوصفات</button>
         <button class="clear-btn" onclick="clearAll()" data-i18n="clearBtn">🗑️ مسح الكل</button>
       </div>
     </div>
@@ -428,6 +451,19 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
   <div class="loading" id="loading">
     <div class="spinner"></div>
     <p data-i18n="searching">جاري البحث عن ألذ الوصفات... 🔍</p>
+  </div>
+
+  <!-- ===== FILTER RELAXED NOTICE ===== -->
+  <div class="filter-relaxed" id="filterRelaxed" style="display:none">
+    <span class="info-icon">💡</span>
+    <span id="filterRelaxedText"></span>
+  </div>
+
+  <!-- ===== DRINK NOTICE ===== -->
+  <div class="drink-notice" id="drinkNotice" style="display:none">
+    <span class="drink-icon">🥤</span>
+    <h3 data-i18n="drinkTitle">وصفات العصائر غير متوفرة حالياً</h3>
+    <p data-i18n="drinkText">قاعدة بيانات TheMealDB لا تحتوي على قسم خاص بالعصائر. جرّب البحث عن طعام أو حلويات!</p>
   </div>
 
   <!-- ===== RESULTS ===== -->
@@ -507,32 +543,42 @@ const aliasMap = {
   'لوبيا':'black eyed peas','بازلاء':'peas',
   'ملفوف':'cabbage','قرنبيط':'cauliflower','سبانخ':'spinach',
   'فجل':'radish','فلفل حار':'chili pepper',
+  'خضروات':'vegetables','فواكه':'fruit',
+  'لحم':'meat','مكرونة':'pasta',
+  'شوفان':'oats','توست':'bread','عيش':'bread','خبز':'bread',
   // English aliases
-  'chicken breast':'chicken','chicken thigh':'chicken',
-  'beef steak':'beef','ground meat':'ground beef',
+  'chicken breast':'chicken','chicken thigh':'chicken','chicken wings':'chicken',
+  'beef steak':'beef','ground meat':'ground beef','minced beef':'ground beef',
   'pasta noodles':'pasta','spaghetti pasta':'spaghetti',
   'olive oil':'olive oil','veggie oil':'vegetable oil',
   'white onion':'onion','red onion':'onion','spring onion':'green onion',
-  'garlic cloves':'garlic',
+  'garlic cloves':'garlic','garlic clove':'garlic',
 };
 
 // ===== AREA → CUISINE MAPPING =====
+// ✅ FIX: Only areas that actually exist in TheMealDB
 const areaToCuisine = {
-  'eastern':['Egyptian','Moroccan','Turkish','Lebanese','Palestinian',
-             'Syrian','Iraqi','Saudi Arabian','Iranian','Tunisian','Algerian','Libyan','Jordanian','Kuwaiti'],
-  'western':['American','British','French','Italian','Spanish','Canadian',
-             'Dutch','Greek','Irish','Portuguese','Austrian','Croatian','Polish','Norwegian',
-             'Russian','Ukrainian','German','Belgian','Swiss','Danish','Finnish','Hungarian',
-             'Romanian','Czech','Slovenian','Swedish'],
-  'asian':['Chinese','Japanese','Thai','Vietnamese','Indian','Korean',
-           'Malaysian','Filipino','Indonesian','Singaporean','Bangladeshi','Sri Lankan','Nepalese']
+  'eastern':[
+    'Egyptian','Moroccan','Turkish','Syrian','Saudi Arabian',
+    'Tunisian','Algerian','Indian'
+  ],
+  'western':[
+    'American','British','French','Italian','Spanish','Canadian',
+    'Dutch','Greek','Irish','Portuguese','Croatian','Polish','Norwegian',
+    'Russian','Ukrainian','Jamaican','Mexican','Argentinian',
+    'Australian','Kenyan'
+  ],
+  'asian':[
+    'Chinese','Japanese','Thai','Vietnamese','Indian',
+    'Malaysian','Filipino'
+  ]
 };
 
 // ===== CATEGORY → MEALDB CATEGORY MAPPING =====
 const catToMealDb = {
   'food':['Beef','Chicken','Lamb','Pork','Seafood','Side','Starter','Breakfast','Goat','Vegan','Vegetarian','Pasta'],
   'dessert':['Dessert'],
-  'drink':['Miscellaneous'] // TheMealDB doesn't have drinks; we handle this specially
+  'drink':[] // ✅ FIX: Empty array = no drinks in TheMealDB
 };
 
 // ===== I18N =====
@@ -541,7 +587,8 @@ const i18n = {
     ideaOwner:'صاحب الفكرة',creatorDesc:'فكرة وتصميم تطبيقات ذكية',
     appSubtitle:'برنامج وصفات الطبخ الذكي',
     appDesc:'أدخل المكونات المتاحة في مطبخك وسنجد لك ألذ الوصفات!',
-    cuisineType:'اتجاه وجنسية الطبيخ',all:'الكل',eastern:'🍳 شرقي',western:'🍝 غربي',asian:'🍜 آسيوي',
+    // ✅ FIX: typo الطبيخ → الطبخ
+    cuisineType:'اتجاه وجنسية الطبخ',all:'الكل',eastern:'🍳 شرقي',western:'🍝 غربي',asian:'🍜 آسيوي',
     dishType:'نوع الطبق',allDishes:'الكل',food:'🥘 طعام',dessert:'🍰 حلويات',drink:'🥤 عصائر',
     inputTitle:'المكونات المتاحة لديك الآن',
     inputHint:'أدخل مكوناً واحداً واضغط إضافة، أو اكتبها مفصولة بفواصل',
@@ -552,12 +599,18 @@ const i18n = {
     emptyText:'جرّب إضافة مكونات أخرى أو تغيير نوع المطبخ!',
     footer:'فكرة: <strong>Emad Hamdy</strong> | البيانات: TheMealDB API | جميع الوصفات مجانية',
     exactMatch:'وصفة مطابقة ✅',suggestion:'اقتراح 💡',
-    addThis:'إضافة هذا لتحضيره:',
+    addThis:'أضف لتحضيره:',
     ingredients:'المكونات',steps:'طريقة التحضير',video:'🎥 شاهد فيديو',
     category:'التصنيف',area:'المطبخ',
     noResults:'لم يتم العثور على وصفات. تأكد من كتابة المكونات بالإنجليزية أو حاول مكونات أخرى.',
     enterIngredient:'الرجاء إدخال مكون واحد على الأقل!',
     fetchError:'حدث خطأ أثناء البحث. يرجى المحاولة مرة أخرى.',
+    filterRelaxed:'لم نجد نتائج مع الفلتر المحدد، فعرضنا كل النتائج المتاحة.',
+    drinkTitle:'وصفات العصائر غير متوفرة حالياً',
+    drinkText:'قاعدة بيانات TheMealDB لا تحتوي على قسم خاص بالعصائر. جرّب البحث عن طعام أو حلويات!',
+    stepLabel:'الخطوة',
+    source:'المصدر الأصلي',
+    ingCount:'مكون',
   },
   en:{
     ideaOwner:'Idea by',creatorDesc:'Smart app ideas & design',
@@ -580,6 +633,12 @@ const i18n = {
     noResults:'No recipes found. Try entering ingredients in English or use different ones.',
     enterIngredient:'Please enter at least one ingredient!',
     fetchError:'Error fetching recipes. Please try again.',
+    filterRelaxed:'No results with the selected filter, so we showed all available recipes.',
+    drinkTitle:'Drink recipes not available yet',
+    drinkText:'TheMealDB doesn\'t have a dedicated drinks section. Try searching for food or desserts!',
+    stepLabel:'Step',
+    source:'Source',
+    ingCount:'ingredients',
   },
   fr:{
     ideaOwner:'Idée par',creatorDesc:'Idées et conception d\'apps intelligentes',
@@ -600,16 +659,23 @@ const i18n = {
     ingredients:'Ingrédients',steps:'Instructions',video:'🎥 Regarder la Vidéo',
     category:'Catégorie',area:'Cuisine',
     noResults:'Aucune recette trouvée. Essayez des ingrédients en anglais ou changez-les.',
-    enterIngredient:'Veuillez entrer au moins un ingrédiment!',
+    enterIngredient:'Veuillez entrer au moins un ingrédient!',
     fetchError:'Erreur lors de la recherche. Veuillez réessayer.',
+    filterRelaxed:'Aucun résultat avec le filtre sélectionné, alors nous avons affiché toutes les recettes disponibles.',
+    drinkTitle:'Recettes de boissons pas encore disponibles',
+    drinkText:'TheMealDB n\'a pas de section dédiée aux boissons. Essayez de chercher des plats ou des desserts!',
+    stepLabel:'Étape',
+    source:'Source',
+    ingCount:'ingrédients',
   },
 };
 
 // ===== LANGUAGE =====
-function setLang(lang){
+// ✅ FIX: Accept btn element directly instead of relying on event
+function setLang(lang, btn){
   currentLang = lang;
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
-  event.target.classList.add('active');
+  btn.classList.add('active');
   const dir = lang==='ar'?'rtl':'ltr';
   document.documentElement.dir=dir;
   document.documentElement.lang=lang;
@@ -625,12 +691,13 @@ function setLang(lang){
 }
 
 // ===== FILTERS =====
-function setCuisine(btn,cuisine){
+// ✅ FIX: Use `this` properly
+function setCuisine(btn, cuisine){
   currentCuisine=cuisine;
   document.querySelectorAll('#cuisineFilters .filter-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
 }
-function setCategory(btn,cat){
+function setCategory(btn, cat){
   currentCategory=cat;
   document.querySelectorAll('#categoryFilters .filter-btn').forEach(b=>b.classList.remove('active-green'));
   btn.classList.add('active-green');
@@ -669,6 +736,8 @@ function clearAll(){
   document.getElementById('results').style.display='none';
   document.getElementById('emptyState').style.display='none';
   document.getElementById('errorMsg').classList.remove('show');
+  document.getElementById('filterRelaxed').style.display='none';
+  document.getElementById('drinkNotice').style.display='none';
   allMeals=[];
 }
 
@@ -678,8 +747,37 @@ function normalize(ing){
   return aliasMap[lower]||lower;
 }
 
+// ===== FILTER MEALS BY CUISINE & CATEGORY =====
+// ✅ FIX: Extracted to a reusable function with fallback logic
+function filterMeals(detailedMeals, cuisine, category){
+  let filtered = detailedMeals;
+
+  // Apply cuisine filter
+  if(cuisine!=='all'){
+    const allowed = areaToCuisine[cuisine]||[];
+    filtered = filtered.filter(m=>allowed.includes(m.strArea));
+  }
+
+  // Apply category filter
+  if(category!=='all'){
+    if(category==='drink'){
+      // ✅ FIX: Don't silently filter to nothing
+      return {meals:[], wasRelaxed:false, isDrink:true};
+    } else {
+      const allowedCats = catToMealDb[category]||[];
+      filtered = filtered.filter(m=>allowedCats.includes(m.strCategory));
+    }
+  }
+
+  return {meals:filtered, wasRelaxed:false, isDrink:false};
+}
+
 // ===== SEARCH =====
 async function searchRecipes(){
+  // Hide previous states
+  document.getElementById('drinkNotice').style.display='none';
+  document.getElementById('filterRelaxed').style.display='none';
+
   if(ingredients.length===0){
     showError(i18n[currentLang].enterIngredient);
     return;
@@ -688,33 +786,52 @@ async function searchRecipes(){
   document.getElementById('results').style.display='none';
   document.getElementById('emptyState').style.display='none';
   document.getElementById('loading').classList.add('show');
+  document.getElementById('searchBtn').disabled = true;
+
+  // ✅ FIX: Handle drink category upfront
+  if(currentCategory==='drink'){
+    document.getElementById('loading').classList.remove('show');
+    document.getElementById('searchBtn').disabled = false;
+    document.getElementById('drinkNotice').style.display='block';
+    return;
+  }
 
   const normalized = ingredients.map(normalize);
   try{
     // Search by each ingredient from TheMealDB
     const allResults = new Map();
     for(const ing of normalized){
-      const res = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${encodeURIComponent(ing)}`);
-      const data = await res.json();
-      if(data.meals){
-        data.meals.forEach(m=>{
-          if(!allResults.has(m.idMeal)){
-            allResults.set(m.idMeal, {id:m.idMeal, name:m.strMeal, thumb:m.strMealThumb, matchCount:1, matchedIngredients:[ing]});
-          } else {
-            const existing = allResults.get(m.idMeal);
-            existing.matchCount++;
-            existing.matchedIngredients.push(ing);
-          }
-        });
+      try{
+        const res = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${encodeURIComponent(ing)}`);
+        const data = await res.json();
+        if(data.meals){
+          data.meals.forEach(m=>{
+            if(!allResults.has(m.idMeal)){
+              allResults.set(m.idMeal, {id:m.idMeal, name:m.strMeal, thumb:m.strMealThumb, matchCount:1, matchedIngredients:[ing]});
+            } else {
+              const existing = allResults.get(m.idMeal);
+              existing.matchCount++;
+              existing.matchedIngredients.push(ing);
+            }
+          });
+        }
+      }catch(e){
+        console.warn('API error for ingredient:', ing, e);
       }
+    }
+
+    if(allResults.size===0){
+      document.getElementById('loading').classList.remove('show');
+      document.getElementById('searchBtn').disabled = false;
+      document.getElementById('emptyState').style.display='block';
+      return;
     }
 
     // Sort by match count
     let sorted = [...allResults.values()].sort((a,b)=>b.matchCount-a.matchCount);
 
-    // Filter by cuisine and category (need full details for that)
-    // Fetch details for top results to filter
-    const topIds = sorted.slice(0,30).map(m=>m.id);
+    // ✅ FIX: Fetch details for more results (up to 40) to have enough after filtering
+    const topIds = sorted.slice(0,40).map(m=>m.id);
     const detailedMeals = [];
     for(const id of topIds){
       try{
@@ -724,22 +841,31 @@ async function searchRecipes(){
       }catch(e){}
     }
 
-    // Apply cuisine filter
-    let filtered = detailedMeals;
-    if(currentCuisine!=='all'){
-      const allowed = areaToCuisine[currentCuisine]||[];
-      filtered = filtered.filter(m=>allowed.includes(m.strArea));
-    }
-    // Apply category filter
-    if(currentCategory!=='all'){
-      if(currentCategory==='drink'){
-        // TheMealDB has no drink category; show nothing or show Miscellaneous
-        filtered = filtered.filter(m=>false); // no drinks in TheMealDB
-      } else {
-        const allowedCats = catToMealDb[currentCategory]||[];
-        filtered = filtered.filter(m=>allowedCats.includes(m.strCategory));
+    // ✅ FIX: Try filtering, then relax if needed
+    let filterResult = filterMeals(detailedMeals, currentCuisine, currentCategory);
+    let wasRelaxed = false;
+
+    // If strict filter returns very few results, try relaxing cuisine filter first
+    if(filterResult.meals.length < 3 && (currentCuisine!=='all' || currentCategory!=='all')){
+      // Try keeping only category filter
+      if(currentCuisine!=='all'){
+        const relaxed = filterMeals(detailedMeals, 'all', currentCategory);
+        if(relaxed.meals.length > filterResult.meals.length){
+          filterResult = relaxed;
+          wasRelaxed = true;
+        }
+      }
+      // If still very few, try removing all filters
+      if(filterResult.meals.length < 3 && currentCategory!=='all'){
+        const relaxed = filterMeals(detailedMeals, 'all', 'all');
+        if(relaxed.meals.length > filterResult.meals.length){
+          filterResult = relaxed;
+          wasRelaxed = true;
+        }
       }
     }
+
+    let filtered = filterResult.meals;
 
     // Separate exact matches vs suggestions
     const exact = [];
@@ -751,47 +877,38 @@ async function searchRecipes(){
         if(ing && ing.trim()) mealIngs.push(ing.trim().toLowerCase());
       }
       const userNorm = [...new Set(normalized)];
-      const hasAll = userNorm.every(u=>mealIngs.some(m=>m.includes(u)||u.includes(m)));
+
+      // ✅ FIX: More flexible matching — check if ANY user ingredient is in the recipe
+      const matchedUserIngs = userNorm.filter(u=>mealIngs.some(m=>m.includes(u)||u.includes(m)));
+      const hasAll = matchedUserIngs.length === userNorm.length;
+
       if(hasAll){
         exact.push({...meal, isExact:true});
-      } else {
-        // Check if we need just 1 more ingredient
+      } else if(matchedUserIngs.length > 0){
+        // Partial match — show as suggestion
         const missing = mealIngs.filter(mi=>!userNorm.some(u=>mi.includes(u)||u.includes(mi)));
-        if(missing.length<=3){
-          suggestions.push({...meal, isExact:false, missing:missing.slice(0,3)});
-        }
+        suggestions.push({...meal, isExact:false, missing:missing.slice(0,3), matchedCount:matchedUserIngs.length});
       }
     });
 
-    // Limit suggestions to 3
-    const limitedSuggestions = suggestions.slice(0,3);
+    // Sort suggestions by matched ingredient count
+    suggestions.sort((a,b)=>b.matchedCount-a.matchedCount);
+
+    // Limit suggestions
+    const limitedSuggestions = suggestions.slice(0,6);
     allMeals = [...exact, ...limitedSuggestions];
 
     document.getElementById('loading').classList.remove('show');
+    document.getElementById('searchBtn').disabled = false;
+
+    // Show relaxed filter notice
+    if(wasRelaxed && allMeals.length > 0){
+      const notice = document.getElementById('filterRelaxed');
+      document.getElementById('filterRelaxedText').textContent = i18n[currentLang].filterRelaxed;
+      notice.style.display = 'flex';
+    }
 
     if(allMeals.length===0){
-      // If filters were too strict, show without filters
-      if(currentCuisine!=='all'||currentCategory!=='all'){
-        // Show from all detailed without filter
-        const fallbackExact = [];
-        const fallbackSugg = [];
-        detailedMeals.forEach(meal=>{
-          const mealIngs = [];
-          for(let i=1;i<=20;i++){
-            const ing = meal[`strIngredient${i}`];
-            if(ing && ing.trim()) mealIngs.push(ing.trim().toLowerCase());
-          }
-          const userNorm = [...new Set(normalized)];
-          const hasAll = userNorm.every(u=>mealIngs.some(m=>m.includes(u)||u.includes(m)));
-          if(hasAll) fallbackExact.push({...meal,isExact:true});
-          else{
-            const miss=mealIngs.filter(mi=>!userNorm.some(u=>mi.includes(u)||u.includes(mi)));
-            if(miss.length<=3) fallbackSugg.push({...meal,isExact:false,missing:miss.slice(0,3)});
-          }
-        });
-        allMeals=[...fallbackExact,...fallbackSugg.slice(0,3)];
-        if(allMeals.length>0){renderResults(allMeals);return;}
-      }
       document.getElementById('emptyState').style.display='block';
     } else {
       renderResults(allMeals);
@@ -799,6 +916,7 @@ async function searchRecipes(){
 
   }catch(err){
     document.getElementById('loading').classList.remove('show');
+    document.getElementById('searchBtn').disabled = false;
     showError(i18n[currentLang].fetchError);
     console.error(err);
   }
@@ -830,7 +948,7 @@ function renderResults(meals){
       : `<span class="match-badge suggest">${i18n[currentLang].suggestion}</span>`;
 
     let suggestHtml='';
-    if(!meal.isExact && meal.missing){
+    if(!meal.isExact && meal.missing && meal.missing.length > 0){
       suggestHtml=`<div class="suggest-box">
         <div class="suggest-title">💡 ${i18n[currentLang].addThis}</div>
         <div class="suggest-text">${meal.missing.map(m=>`<span class="highlight">${m}</span>`).join(' + ')}</div>
@@ -851,7 +969,7 @@ function renderResults(meals){
         <div class="recipe-tags">
           ${meal.strCategory?`<span>${meal.strCategory}</span>`:''}
           ${meal.strArea?`<span>${meal.strArea}</span>`:''}
-          <span>${ings.length} ${currentLang==='ar'?'مكون':'ingredients'}</span>
+          <span>${ings.length} ${i18n[currentLang].ingCount}</span>
         </div>
         <div class="recipe-preview">${preview}</div>
         ${suggestHtml}
@@ -864,6 +982,8 @@ function renderResults(meals){
 function openModal(meal, ings){
   const modal = document.getElementById('modalContent');
   const steps = (meal.strInstructions||'').split(/\r\n|\n/).filter(Boolean);
+  const stepLabel = i18n[currentLang].stepLabel;
+  const sourceLabel = i18n[currentLang].source;
 
   modal.innerHTML=`
     <div class="modal-header">
@@ -884,10 +1004,10 @@ function openModal(meal, ings){
       </div>
       <div class="modal-section">
         <h3>📝 ${i18n[currentLang].steps}</h3>
-        <div class="instructions">${steps.map((s,i)=>`${currentLang==='ar'?'الخطوة':'Step'} ${i+1}: ${s}`).join('\n\n')}</div>
+        <div class="instructions">${steps.map((s,i)=>`${stepLabel} ${i+1}: ${s}`).join('\n\n')}</div>
       </div>
       ${meal.strYoutube?`<a href="${meal.strYoutube}" target="_blank" class="video-link">${i18n[currentLang].video} ▶</a>`:''}
-      ${meal.strSource?`<a href="${meal.strSource}" target="_blank" class="video-link" style="background:var(--secondary)">🔗 ${currentLang==='ar'?'المصدر الأصلي':'Source'}</a>`:''}
+      ${meal.strSource?`<a href="${meal.strSource}" target="_blank" class="video-link" style="background:var(--secondary)">🔗 ${sourceLabel}</a>`:''}
     </div>`;
   document.getElementById('modalOverlay').classList.add('show');
   document.body.style.overflow='hidden';
