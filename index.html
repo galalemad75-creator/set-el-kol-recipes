@@ -2,8 +2,23 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ست الكل - Set El Kol | برنامج وصفات الطبخ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>ست الكل - Set El Kol | برنامج وصفات الطبخ الذكي</title>
+<meta name="description" content="أدخل المكونات المتاحة في مطبخك وسيعثر التطبيق على ألذ الوصفات المناسبة لك! بحث ذكي بالذكاء الاصطناعي.">
+<meta name="keywords" content="وصفات,طبخ,مكونات,طبخ عربي,وصفات ذكية,recipe finder,cooking">
+<meta name="author" content="Set El Kol">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#E8553A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="ست الكل">
+<meta name="format-detection" content="telephone=no">
+<meta property="og:title" content="ست الكل - Set El Kol | وصفات الطبخ الذكي">
+<meta property="og:description" content="أدخل المكونات المتاحة في مطبخك وسيعثر التطبيق على ألذ الوصفات!">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://galalemad75-creator.github.io/set-el-kol-recipes/">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E👩‍🍳%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://www.themealdb.com">
 <style>
 :root{
@@ -22,28 +37,36 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
 @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 @keyframes slideIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
 @keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-5px) rotate(2deg)}75%{transform:translateY(3px) rotate(-1deg)}}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(232,85,58,.4)}50%{box-shadow:0 0 0 12px rgba(232,85,58,0)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
 .animate-in{animation:fadeInUp .5s ease both}
 
-.hero{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 40%,#8B2020 100%);padding:32px 24px 28px;text-align:center;color:#fff;position:relative;overflow:hidden}
+/* ===== HERO ===== */
+.hero{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 40%,#8B2020 100%);padding:40px 24px 32px;text-align:center;color:#fff;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='50' height='50' viewBox='0 0 50 50' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='25' cy='25' r='1.5' fill='%23ffffff06'/%3E%3C/svg%3E") repeat}
 .hero-content{position:relative;z-index:2;max-width:800px;margin:0 auto}
-.creator{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
-.creator-avatar{width:80px;height:80px;border-radius:50%;border:3px solid rgba(255,255,255,.4);background:linear-gradient(135deg,var(--gold-light),var(--gold));display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;color:var(--bg-dark);flex-shrink:0;box-shadow:0 4px 20px rgba(0,0,0,.2)}
-.creator-info{text-align:right}.creator-info .creator-label{font-size:12px;opacity:.7;letter-spacing:2px;margin-bottom:2px}.creator-info .creator-name{font-size:24px;font-weight:700;letter-spacing:1px}.creator-info .creator-title{font-size:13px;opacity:.8;margin-top:2px}
-.app-title{font-size:clamp(32px,6vw,52px);font-weight:800;margin:12px 0 4px;text-shadow:0 3px 20px rgba(0,0,0,.2);letter-spacing:2px}
-.app-subtitle{font-size:16px;opacity:.85;margin-bottom:6px}.app-desc{font-size:13px;opacity:.65;max-width:500px;margin:0 auto}
+.app-icon{font-size:clamp(48px,8vw,72px);margin-bottom:8px;display:block;filter:drop-shadow(0 4px 12px rgba(0,0,0,.2))}
+.app-title{font-size:clamp(32px,6vw,52px);font-weight:800;margin:4px 0;text-shadow:0 3px 20px rgba(0,0,0,.2);letter-spacing:2px}
+.app-subtitle{font-size:18px;opacity:.9;margin-bottom:8px;font-weight:500}
+.app-desc{font-size:14px;opacity:.7;max-width:500px;margin:0 auto;line-height:1.8}
 
-.top-bar{background:var(--bg-card);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.04);flex-wrap:wrap}
-.lang-btn{padding:6px 16px;border-radius:20px;font-size:13px;background:var(--bg);border:1px solid var(--border);color:var(--text-light);cursor:pointer;transition:var(--transition);font-family:var(--font)}
+/* ===== TOP BAR ===== */
+.top-bar{background:var(--bg-card);border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;justify-content:center;gap:8px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.04);flex-wrap:wrap}
+.lang-btn{padding:6px 14px;border-radius:20px;font-size:13px;background:var(--bg);border:1px solid var(--border);color:var(--text-light);cursor:pointer;transition:var(--transition);font-family:var(--font)}
 .lang-btn.active,.lang-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.nav-link{padding:6px 14px;border-radius:20px;font-size:12px;background:transparent;border:1px solid transparent;color:var(--text-muted);cursor:pointer;transition:var(--transition);font-family:var(--font)}
+.nav-link:hover{color:var(--primary);background:rgba(232,85,58,.06)}
 
+/* ===== CONTAINER ===== */
 .container{max-width:900px;margin:0 auto;padding:24px 16px}
+
+/* ===== FILTERS ===== */
 .filters{margin-bottom:24px}.filter-group{margin-bottom:16px}
 .filter-label{font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:8px}
 .filter-label .icon{font-size:20px}.filter-options{display:flex;gap:8px;flex-wrap:wrap}
@@ -52,6 +75,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
 .filter-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 4px 12px rgba(232,85,58,.3)}
 .filter-btn.active-green{background:var(--secondary);color:#fff;border-color:var(--secondary);box-shadow:0 4px 12px rgba(45,155,78,.3)}
 
+/* ===== INPUT ===== */
 .input-section{margin-bottom:24px}
 .input-box{background:var(--bg-card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);border:2px solid var(--border);transition:var(--transition)}
 .input-box:focus-within{border-color:var(--primary-light);box-shadow:var(--shadow-lg)}
@@ -60,6 +84,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
 .input-header h3{font-size:18px;color:var(--text)}.input-header p{font-size:12px;color:var(--text-muted)}
 .ingredient-input-wrap{display:flex;gap:10px;margin-bottom:12px}
 .ingredient-input{flex:1;padding:14px 18px;border-radius:var(--radius-sm);border:2px solid var(--border);font-size:16px;font-family:var(--font);background:var(--bg);color:var(--text);transition:var(--transition);text-align:right}
+[dir=ltr] .ingredient-input{text-align:left}
 .ingredient-input:focus{outline:none;border-color:var(--primary-light);box-shadow:0 0 0 3px rgba(232,85,58,.1)}
 .ingredient-input::placeholder{color:var(--text-muted)}
 .add-btn{padding:14px 20px;border-radius:var(--radius-sm);background:var(--secondary);color:#fff;font-size:16px;border:none;cursor:pointer;transition:var(--transition);font-family:var(--font);font-weight:600;white-space:nowrap}
@@ -75,14 +100,24 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
 .clear-btn{padding:16px 24px;border-radius:var(--radius-sm);background:var(--bg);color:var(--text-light);font-size:14px;border:2px solid var(--border);cursor:pointer;transition:var(--transition);font-family:var(--font);font-weight:600}
 .clear-btn:hover{border-color:var(--primary-light);color:var(--primary)}
 
+/* ===== QUICK SUGGESTIONS ===== */
+.quick-suggest{margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)}
+.quick-suggest label{font-size:12px;color:var(--text-muted);margin-bottom:6px;display:block}
+.quick-chips{display:flex;gap:6px;flex-wrap:wrap}
+.quick-chip{padding:5px 12px;border-radius:16px;font-size:12px;background:var(--bg);border:1px solid var(--border);color:var(--text-light);cursor:pointer;transition:var(--transition);font-family:var(--font)}
+.quick-chip:hover{border-color:var(--primary);color:var(--primary);background:rgba(232,85,58,.05)}
+
+/* ===== LOADING ===== */
 .loading{text-align:center;padding:60px 20px;display:none}.loading.show{display:block}
 .spinner{width:48px;height:48px;border:4px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
 .loading p{color:var(--text-muted);font-size:15px}
 
+/* ===== RESULTS ===== */
 .results{margin-top:8px}
-.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--border)}
+.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--border);flex-wrap:wrap;gap:8px}
 .results-header h2{font-size:22px;color:var(--text);display:flex;align-items:center;gap:8px}
 .results-count{background:var(--primary);color:#fff;font-size:12px;padding:2px 10px;border-radius:12px;font-weight:700}
+.sort-select{padding:6px 12px;border-radius:8px;border:1px solid var(--border);font-size:12px;font-family:var(--font);background:var(--bg-card);color:var(--text-light);cursor:pointer}
 
 .recipe-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
 .recipe-card{background:var(--bg-card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:var(--transition);cursor:pointer;border:2px solid transparent}
@@ -98,14 +133,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
 .recipe-tags span{font-size:11px;padding:3px 8px;border-radius:12px;background:var(--bg);color:var(--text-muted);border:1px solid var(--border)}
 .match-badge{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:4px 10px;border-radius:8px;font-weight:700}
 .match-badge.exact{background:#E8F5E9;color:var(--secondary-dark)}
-.match-badge.partial{background:#E3F2FD;color:#1565C0}
-.match-badge.suggest{background:#FFF3E0;color:#E65100}
+.match-badge.high{background:#E3F2FD;color:#1565C0}
+.match-badge.partial{background:#FFF3E0;color:#E65100}
+.match-badge.low{background:#F5F5F5;color:#757575}
 .recipe-preview{font-size:13px;color:var(--text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:8px}
 .match-bar{margin-top:8px;display:flex;align-items:center;gap:6px}
 .match-bar-fill{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
-.match-bar-fill-inner{height:100%;border-radius:3px;transition:width .5s}
+.match-bar-fill-inner{height:100%;border-radius:3px;transition:width .5s ease}
 .match-bar-label{font-size:11px;font-weight:700;color:var(--text-muted);white-space:nowrap}
 
+/* ===== MODAL ===== */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
 .modal-overlay.show{display:flex}
 .modal{background:var(--bg-card);border-radius:var(--radius-lg);max-width:700px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:fadeInUp .4s ease both}
@@ -122,59 +159,82 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
 .ingredient-list li{font-size:14px;color:var(--text);padding:8px 12px;background:var(--bg);border-radius:var(--radius-sm);display:flex;align-items:center;gap:8px}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--border);flex-shrink:0}
 .dot.match{background:var(--secondary)}
-.ingredient-list li .measure{color:var(--text-muted);font-weight:600;margin-right:auto}
+.ingredient-list li .measure{color:var(--text-muted);font-weight:600;margin-inline-start:auto}
 .instructions{font-size:14px;line-height:2;color:var(--text-light);white-space:pre-line}
-.video-link{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:var(--radius-sm);background:var(--primary);color:#fff;font-size:14px;font-weight:600;text-decoration:none;transition:var(--transition);margin-top:8px;margin-left:8px}
+.video-link{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:var(--radius-sm);background:var(--primary);color:#fff;font-size:14px;font-weight:600;text-decoration:none;transition:var(--transition);margin-top:8px;margin-inline-end:8px;border:none;cursor:pointer}
 .video-link:hover{background:var(--primary-dark);transform:translateY(-2px)}
 
+/* ===== PAGE VIEWS (Privacy, About, Terms) ===== */
+.page-view{display:none;max-width:800px;margin:0 auto;padding:32px 16px;animation:fadeInUp .4s ease both}
+.page-view.active{display:block}
+.page-view h1{font-size:28px;color:var(--primary-dark);margin-bottom:24px;padding-bottom:12px;border-bottom:3px solid var(--primary)}
+.page-view h2{font-size:20px;color:var(--text);margin:24px 0 12px}
+.page-view p,.page-view li{font-size:14px;line-height:2;color:var(--text-light);margin-bottom:12px}
+.page-view ul{padding-inline-start:20px}
+.page-view ul li{margin-bottom:8px}
+.page-view .back-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:var(--radius-sm);background:var(--primary);color:#fff;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:var(--transition);font-family:var(--font);margin-bottom:24px}
+.page-view .back-btn:hover{background:var(--primary-dark)}
+.page-view .last-update{font-size:12px;color:var(--text-muted);margin-top:24px;padding-top:12px;border-top:1px solid var(--border)}
+.main-view{display:block}.main-view.hidden{display:none}
+
+/* ===== EMPTY & ERROR ===== */
 .empty-state{text-align:center;padding:60px 20px}
 .empty-state .empty-icon{font-size:64px;margin-bottom:16px;display:block;animation:bounce 2s ease-in-out infinite}
 .empty-state h3{font-size:20px;color:var(--text);margin-bottom:8px}
 .empty-state p{color:var(--text-muted);font-size:14px;max-width:400px;margin:0 auto}
-
 .error-msg{background:#FDECEA;color:#C62828;padding:16px 20px;border-radius:var(--radius-sm);font-size:14px;display:none;align-items:center;gap:10px;margin-top:16px;border:1px solid #F5C6CB}
 .error-msg.show{display:flex}
-
 .suggest-box{background:linear-gradient(135deg,#FFF8E1,#FFF3E0);border:2px solid #FFE0B2;border-radius:var(--radius-sm);padding:12px 16px;margin-top:10px}
 .suggest-box .suggest-title{font-size:13px;font-weight:700;color:#E65100;margin-bottom:6px;display:flex;align-items:center;gap:6px}
 .suggest-box .suggest-text{font-size:13px;color:var(--text-light);line-height:1.6}
 .suggest-box .highlight{color:var(--primary);font-weight:700}
 
+/* ===== FOOTER ===== */
 .app-footer{text-align:center;padding:40px 24px;margin-top:40px;border-top:2px solid var(--border);color:var(--text-muted);font-size:13px}
-.app-footer .footer-brand{font-size:20px;margin-bottom:8px}.app-footer a{color:var(--primary);text-decoration:none}
+.app-footer .footer-brand{font-size:20px;margin-bottom:12px}
+.app-footer-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
+.app-footer-links a{color:var(--primary);text-decoration:none;font-weight:500;transition:var(--transition)}
+.app-footer-links a:hover{color:var(--primary-dark);text-decoration:underline}
 
+/* ===== RESPONSIVE ===== */
 @media(max-width:600px){
-  .creator{flex-direction:column;text-align:center}.creator-info{text-align:center}
   .ingredient-input-wrap{flex-direction:column}.search-row{flex-direction:column}
   .ingredient-list{grid-template-columns:1fr}.recipe-grid{grid-template-columns:1fr}
   .modal-header img{height:200px}.filter-options{justify-content:center}
+  .results-header{flex-direction:column;align-items:flex-start}
 }
+
+/* ===== ACCESSIBILITY ===== */
+:focus-visible{outline:3px solid var(--primary);outline-offset:2px;border-radius:4px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
 </style>
 </head>
 <body>
 
+<!-- ===== HEADER ===== -->
 <header class="hero">
   <div class="hero-content">
-    <div class="creator">
-      <div class="creator-avatar">EH</div>
-      <div class="creator-info">
-        <div class="creator-label" data-i18n="ideaOwner">صاحب الفكرة</div>
-        <div class="creator-name">Emad Hamdy</div>
-        <div class="creator-title" data-i18n="creatorDesc">فكرة وتصميم تطبيقات ذكية</div>
-      </div>
-    </div>
-    <div class="app-title">👩‍🍳 ست الكل</div>
+    <span class="app-icon" aria-hidden="true">👩‍🍳</span>
+    <div class="app-title" data-i18n="appName">ست الكل</div>
     <div class="app-subtitle" data-i18n="appSubtitle">برنامج وصفات الطبخ الذكي</div>
-    <div class="app-desc" data-i18n="appDesc">أدخل المكونات المتاحة في مطبخك وسنجد لك ألذ الوصفات!</div>
+    <div class="app-desc" data-i18n="appDesc">أدخل المكونات المتاحة في مطبخك وسنجد لك ألذ الوصفات الممكنة!</div>
   </div>
 </header>
 
-<div class="top-bar">
-  <button class="lang-btn active" onclick="setLang('ar',this)">🇸🇦 العربية</button>
-  <button class="lang-btn" onclick="setLang('en',this)">🇬🇧 English</button>
-  <button class="lang-btn" onclick="setLang('fr',this)">🇫🇷 Français</button>
-</div>
+<!-- ===== TOP BAR ===== -->
+<nav class="top-bar" aria-label="القائمة">
+  <button class="lang-btn active" onclick="setLang('ar',this)" aria-label="العربية">🇸🇦 العربية</button>
+  <button class="lang-btn" onclick="setLang('en',this)" aria-label="English">🇬🇧 English</button>
+  <button class="lang-btn" onclick="setLang('fr',this)" aria-label="Français">🇫🇷 Français</button>
+  <span style="color:var(--border)">|</span>
+  <button class="nav-link" onclick="showPage('about')" data-i18n="aboutNav">من نحن</button>
+  <button class="nav-link" onclick="showPage('privacy')" data-i18n="privacyNav">الخصوصية</button>
+  <button class="nav-link" onclick="showPage('terms')" data-i18n="termsNav">الشروط</button>
+</nav>
 
+<!-- ===== MAIN VIEW ===== -->
+<div class="main-view" id="mainView">
 <div class="container">
   <div class="filters">
     <div class="filter-group">
@@ -207,108 +267,426 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
       </div>
       <div class="ingredient-input-wrap">
         <input type="text" class="ingredient-input" id="ingredientInput"
-               placeholder="مثال: دجاج، أرز، طماطم..."
-               onkeydown="if(event.key==='Enter')addIngredient()">
+               placeholder="مثال: دجاج، أرز، طماطم..." autocomplete="off"
+               aria-label="أدخل مكون"
+               onkeydown="if(event.key==='Enter'){event.preventDefault();addIngredient()}">
         <button class="add-btn" onclick="addIngredient()" data-i18n="addBtn">➕ إضافة</button>
       </div>
-      <div class="tags" id="tagsContainer"></div>
+      <div class="tags" id="tagsContainer" role="list" aria-label="المكونات المضافة"></div>
       <div class="search-row">
         <button class="search-btn" id="searchBtn" onclick="searchRecipes()" data-i18n="searchBtn">🔍 ابحث عن الوصفات</button>
         <button class="clear-btn" onclick="clearAll()" data-i18n="clearBtn">🗑️ مسح الكل</button>
       </div>
+      <div class="quick-suggest">
+        <label data-i18n="quickLabel">إضافات سريعة:</label>
+        <div class="quick-chips" id="quickChips"></div>
+      </div>
     </div>
   </div>
 
-  <div class="error-msg" id="errorMsg"><span>⚠️</span><span id="errorText"></span></div>
-  <div class="loading" id="loading"><div class="spinner"></div><p data-i18n="searching">جاري البحث عن ألذ الوصفات... 🔍</p></div>
+  <div class="error-msg" id="errorMsg" role="alert"><span>⚠️</span><span id="errorText"></span></div>
+  <div class="loading" id="loading" aria-live="polite"><div class="spinner"></div><p data-i18n="searching">جاري البحث عن ألذ الوصفات... 🔍</p></div>
   <div class="results" id="results" style="display:none">
     <div class="results-header">
       <h2>📋 <span data-i18n="results">النتائج</span> <span class="results-count" id="resultsCount">0</span></h2>
+      <select class="sort-select" id="sortSelect" onchange="sortResults()" aria-label="ترتيب">
+        <option value="match" data-i18n="sortMatch">ترتيب حسب التطابق</option>
+        <option value="name" data-i18n="sortName">ترتيب أبجدي</option>
+        <option value="ingredients" data-i18n="sortIng">الأقل مكونات</option>
+      </select>
     </div>
     <div class="recipe-grid" id="recipeGrid"></div>
   </div>
   <div class="empty-state" id="emptyState" style="display:none">
     <span class="empty-icon">🍽️</span>
     <h3 data-i18n="emptyTitle">لم نجد وصفات مطابقة</h3>
-    <p data-i18n="emptyText">جرّب إضافة مكونات أخرى!</p>
+    <p data-i18n="emptyText">جرّب إضافة مكونات أخرى أو تقليل عدد المكونات!</p>
   </div>
 </div>
+</div>
 
-<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+<!-- ===== MODAL ===== -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()" role="dialog" aria-modal="true">
   <div class="modal" id="modalContent"></div>
 </div>
 
+<!-- ===== ABOUT PAGE ===== -->
+<div class="page-view" id="page-about">
+  <button class="back-btn" onclick="showPage('main')">← <span data-i18n="backBtn">العودة للرئيسية</span></button>
+  <h1 data-i18n="aboutTitle">👩‍🍳 من نحن</h1>
+  <p data-i18n="aboutP1">مرحباً بك في <strong>ست الكل (Set El Kol)</strong>، تطبيق الطبخ الذكي الذي يساعدك في اكتشاف ألذ الوصفات بناءً على المكونات المتاحة لديك!</p>
+  <h2 data-i18n="aboutH2_1">🎯 رسالتنا</h2>
+  <p data-i18n="aboutP2">نؤمن بأن الطبخ يجب أن يكون ممتعاً وسهلًا. لذلك صممنا هذا التطبيق لمساعدتك في تحويل أي مكونات لديك إلى وجبات لذيذة ومتنوعة من مختلف المطابخ العالمية.</p>
+  <h2 data-i18n="aboutH2_2">✨ ما يميزنا</h2>
+  <ul>
+    <li data-i18n="aboutL1">بحث ذكي يطابق المكونات المتاحة لديك مع آلاف الوصفات</li>
+    <li data-i18n="aboutL2">دعم اللغة العربية والإنجليزية والفرنسية</li>
+    <li data-i18n="aboutL3">وصفات من مطابخ متنوعة: شرقية وغربية وآسيوية</li>
+    <li data-i18n="aboutL4">واجهة سهلة وبسيطة تناسب الجميع</li>
+    <li data-i18n="aboutL5">بدون إعلانات مزعجة أو رسوم خفية</li>
+  </ul>
+  <h2 data-i18n="aboutH2_3">📊 مصدر البيانات</h2>
+  <p data-i18n="aboutP3">يستخدم التطبيق قاعدة بيانات <a href="https://www.themealdb.com" target="_blank" rel="noopener">TheMealDB</a> المفتوحة والمجانية، التي تحتوي على مئات الوصفات من جميع أنحاء العالم.</p>
+  <h2 data-i18n="aboutH2_4">📧 تواصل معنا</h2>
+  <p data-i18n="aboutP4">إذا كان لديك أي اقتراح أو ملاحظة، لا تتردد في التواصل معنا. نحن نقدر ملاحظاتك ونسعى دائماً لتحسين التطبيق.</p>
+  <div class="last-update" data-i18n="aboutUpdate">آخر تحديث: أبريل 2026</div>
+</div>
+
+<!-- ===== PRIVACY PAGE ===== -->
+<div class="page-view" id="page-privacy">
+  <button class="back-btn" onclick="showPage('main')">← <span data-i18n="backBtn">العودة للرئيسية</span></button>
+  <h1 data-i18n="privacyTitle">🔒 سياسة الخصوصية</h1>
+  <p data-i18n="privacyP1">نحن في <strong>ست الكل (Set El Kol)</strong> نحترم خصوصيتك ونلتزم بحماية بياناتك الشخصية. تشرح هذه السياسة كيفية جمع واستخدام المعلومات عند استخدامك للتطبيق.</p>
+
+  <h2 data-i18n="privH2_1">1. المعلومات التي نجمعها</h2>
+  <p data-i18n="privP1">لا يجمع التطبيق أي بيانات شخصية تعريفية. المكونات التي تدخلها للبحث تتم معالجتها محلياً وفي الخادم فقط لإرجاع نتائج الوصفات ولا يتم تخزينها.</p>
+  <ul>
+    <li data-i18n="privL1">لا نطلب التسجيل أو إنشاء حساب</li>
+    <li data-i18n="privL2">لا نجمع عنوان البريد الإلكتروني أو رقم الهاتف</li>
+    <li data-i18n="privL3">لا نتتبع موقعك الجغرافي</li>
+    <li data-i18n="privL4">لا نصل إلى الكاميرا أو الميكروفون أو جهات الاتصال</li>
+  </ul>
+
+  <h2 data-i18n="privH2_2">2. ملفات تعريف الارتباط (Cookies)</h2>
+  <p data-i18n="privP2">قد يستخدم التطبيق ملفات تعريف الارتباط الأساسية لحفظ تفضيلاتك مثل اللغة المختارة. هذه الملفات لا تحتوي على أي معلومات شخصية.</p>
+
+  <h2 data-i18n="privH2_3">3. خدمات الطرف الثالث</h2>
+  <p data-i18n="privP3">يستخدم التطبيق واجهة برمجة التطبيقات (API) الخاصة بـ TheMealDB للحصول على بيانات الوصفات. يرجى مراجعة <a href="https://www.themealdb.com/api.php" target="_blank" rel="noopener">سياسة خصوصية TheMealDB</a> لمزيد من المعلومات.</p>
+
+  <h2 data-i18n="privH2_4">4. أمان البيانات</h2>
+  <p data-i18n="privP4">نتخذ إجراءات أمنية معقولة لحماية المعلومات أثناء نقلها. التطبيق يستخدم اتصال HTTPS آمن لجميع الطلبات.</p>
+
+  <h2 data-i18n="privH2_5">5. خصوصية الأطفال</h2>
+  <p data-i18n="privP5">التطبيق مناسب لجميع الأعمار ولا يجمع عمداً أي معلومات من الأطفال دون سن 13 عاماً. التطبيق لا يحتوي على محتوى غير لائق.</p>
+
+  <h2 data-i18n="privH2_6">6. التغييرات على هذه السياسة</h2>
+  <p data-i18n="privP6">قد نقوم بتحديث سياسة الخصوصية من وقت لآخر. سيتم نشر أي تغييرات على هذه الصفحة مع تحديث تاريخ "آخر تحديث".</p>
+
+  <h2 data-i18n="privH2_7">7. موافقتك</h2>
+  <p data-i18n="privP7">باستخدام هذا التطبيق، فإنك توافق على سياسة الخصوصية هذه.</p>
+
+  <div class="last-update" data-i18n="privUpdate">آخر تحديث: أبريل 2026</div>
+</div>
+
+<!-- ===== TERMS PAGE ===== -->
+<div class="page-view" id="page-terms">
+  <button class="back-btn" onclick="showPage('main')">← <span data-i18n="backBtn">العودة للرئيسية</span></button>
+  <h1 data-i18n="termsTitle">📜 شروط الاستخدام</h1>
+  <p data-i18n="termsP1">باستخدام تطبيق <strong>ست الكل (Set El Kol)</strong>، فإنك توافق على الشروط والأحكام التالية. يرجى قراءتها بعناية قبل استخدام التطبيق.</p>
+
+  <h2 data-i18n="termsH2_1">1. القبول والشروط</h2>
+  <p data-i18n="termsP2">باستخدام هذا التطبيق، فإنك تقر بأنك قرأت وفهمت ووافقت على الالتزام بهذه الشروط. إذا كنت لا توافق على أي جزء من هذه الشروط، يرجى عدم استخدام التطبيق.</p>
+
+  <h2 data-i18n="termsH2_2">2. الاستخدام المسموح</h2>
+  <ul>
+    <li data-i18n="termsL1">يُسمح لك باستخدام التطبيق للأغراض الشخصية وغير التجارية فقط</li>
+    <li data-i18n="termsL2">يُمنع استخدام التطبيق لأي أغراض غير قانونية أو غير مصرح بها</li>
+    <li data-i18n="termsL3">يُمنع محاولة الوصول غير المصرح به إلى أنظمة التطبيق أو شبكاته</li>
+  </ul>
+
+  <h2 data-i18n="termsH2_3">3. دقة المعلومات</h2>
+  <p data-i18n="termsP3">يتم تقديم الوصفات والمعلومات الغذائية لأغراض إعلامية فقط. نحن لا نضمن دقة أو اكتمال أو موثوقية المعلومات المقدمة. يُنصح بالتحقق من الوصفات والحساسيات الغذائية قبل التحضير.</p>
+
+  <h2 data-i18n="termsH2_4">4. إخلاء المسؤولية الصحية</h2>
+  <p data-i18n="termsP4">التطبيق ليس بديلاً عن المشورة الطبية أو الغذائية المهنية. استشر طبيبك أو أخصائي التغذية قبل اتباع أي نظام غذائي أو وصفة إذا كانت لديك حساسية أو حالة صحية خاصة.</p>
+
+  <h2 data-i18n="termsH2_5">5. الملكية الفكرية</h2>
+  <p data-i18n="termsP5">جميع حقوق الملكية الفكرية المتعلقة بتصميم واجهة التطبيق وشعاراته محفوظة. بيانات الوصفات مملوكة لـ TheMealDB وتُستخدم بموجب شروطها.</p>
+
+  <h2 data-i18n="termsH2_6">6. إخلاء المسؤولية عن الضمانات</h2>
+  <p data-i18n="termsP6">يتم تقديم التطبيق "كما هو" دون أي ضمانات من أي نوع، سواء صريحة أو ضمنية. لا نضمن أن التطبيق سيكون خالياً من الأخطاء أو متاحاً دون انقطاع.</p>
+
+  <h2 data-i18n="termsH2_7">7. تحديد المسؤولية</h2>
+  <p data-i18n="termsP7">لن نكون مسؤولين عن أي أضرار مباشرة أو غير مباشرة أو عرضية أو تبعية ناتجة عن استخدام أو عدم القدرة على استخدام التطبيق.</p>
+
+  <h2 data-i18n="termsH2_8">8. التعديلات</h2>
+  <p data-i18n="termsP8">نحتفظ بالحق في تعديل هذه الشروط في أي وقت. استمرارك في استخدام التطبيق بعد نشر التعديلات يعني موافقتك على الشروط المعدلة.</p>
+
+  <h2 data-i18n="termsH2_9">9. القانون المعمول به</h2>
+  <p data-i18n="termsP9">تخضع هذه الشروط وتُفسر وفقاً للقوانين المعمول بها. أي نزاعات تنشأ عن هذه الشروط تخضع للاختصاص القضائي المختص.</p>
+
+  <div class="last-update" data-i18n="termsUpdate">آخر تحديث: أبريل 2026</div>
+</div>
+
+<!-- ===== FOOTER ===== -->
 <footer class="app-footer">
   <div class="footer-brand">👩‍🍳 ست الكل - Set El Kol</div>
-  <p data-i18n="footer">فكرة: <strong>Emad Hamdy</strong> | البيانات: TheMealDB API</p>
+  <div class="app-footer-links">
+    <a href="#" onclick="showPage('about');return false" data-i18n="aboutNav">من نحن</a>
+    <a href="#" onclick="showPage('privacy');return false" data-i18n="privacyNav">الخصوصية</a>
+    <a href="#" onclick="showPage('terms');return false" data-i18n="termsNav">الشروط</a>
+  </div>
+  <p data-i18n="footer">البيانات: <a href="https://www.themealdb.com" target="_blank" rel="noopener">TheMealDB API</a></p>
+  <p style="margin-top:8px;font-size:11px" data-i18n="footerCopy">© 2026 ست الكل - جميع الحقوق محفوظة</p>
 </footer>
 
 <script>
+// ===== STATE =====
 let ingredients=[],currentCuisine='all',currentCategory='all',currentLang='ar',allResults=[],mealCache={};
+const currentPage='main';
 
-// ===== ARABIC ALIASES (Comprehensive) =====
+// ===== COMPREHENSIVE ARABIC ALIASES =====
 const aliases={
-  'دجاج':'chicken','فرخة':'chicken','فراخ':'chicken','جاج':'chicken','دجاجة':'chicken','فرخ':'chicken',
-  'لحمة':'beef','لحمة مفرومة':'ground beef','مفرومة':'ground beef','لحمة حمرا':'beef','لحمة بقري':'beef',
-  'خروف':'lamb','ضاني':'lamb','لحم خروف':'lamb','خرفان':'lamb',
-  'سمك':'fish','فيليه':'fish','سمكة':'fish','سلمون':'salmon','تونة':'tuna','بلطي':'tilapia',
-  'جمبري':'shrimp','روبيان':'shrimp','كركند':'lobster','كابوريا':'crab','سلطعون':'crab',
-  'بسطرمة':'pastrami','سجق':'sausage','هوت دوج':'hot dog',
-  'أرز':'rice','رز':'rice','ارز':'rice','أرز بسمتي':'basmati rice','رز شعرية':'vermicelli',
-  'معكرونة':'pasta','مكرونة':'pasta','باستا':'pasta','سباغيتي':'spaghetti','نودلز':'noodles',
-  'طحين':'flour','دقيق':'flour','فرينة':'flour','سميد':'semolina',
-  'عيش':'bread','خبز':'bread','توست':'bread','باتيه':'baguette','عيش بلدي':'flatbread',
-  'شوفان':'oats','برغل':'bulgur','كسكس':'couscous',
-  'حليب':'milk','لبن':'yogurt','زبادي':'yogurt','روب':'yogurt','قشطة':'cream',
-  'جبنة':'cheese','جبن':'cheese','جبنة بيضاء':'white cheese','موتزاريلا':'mozzarella','ريكوتا':'ricotta',
-  'زبدة':'butter','سمن':'ghee','سمنة':'ghee',
-  'بيض':'egg','بيضة':'egg','بيضات':'eggs',
-  'طماطم':'tomato','بندورة':'tomato','طمطم':'tomato','معجون طماطم':'tomato puree','صلصة طماطم':'tomato sauce',
-  'بصل':'onion','بصلة':'onion','كراث':'shallot','بصل أخضر':'green onion',
-  'ثوم':'garlic','توم':'garlic',
+  // Proteins
+  'دجاج':'chicken','فرخة':'chicken','فراخ':'chicken','جاج':'chicken','دجاجة':'chicken','فرخ':'chicken','ورك دجاج':'chicken thigh','صدور دجاج':'chicken breast','اجنحة دجاج':'chicken wings',
+  'لحمة':'beef','لحمة مفرومة':'ground beef','مفرومة':'ground beef','لحمة حمرا':'beef','لحمة بقري':'beef','ستيك':'steak','تريا':'beef','لانشون':'beef',
+  'خروف':'lamb','ضاني':'lamb','لحم خروف':'lamb','خرفان':'lamb','ريش خروف':'lamb chops',
+  'سمك':'fish','فيليه':'fish','سمكة':'fish','بلطي':'tilapia','مبروك':'fish','بوري':'mullet','دنيس':'sea bass',
+  'سلمون':'salmon','تونة':'tuna','سردين':'sardine','ماكريل':'mackerel',
+  'جمبري':'shrimp','روبيان':'shrimp','كركند':'lobster','كابوريا':'crab','سلطعون':'crab','كلماري':'squid','حبار':'squid','أخطبوط':'octopus',
+  'بسطرمة':'pastrami','سجق':'sausage','هوت دوج':'hot dog','نقانق':'sausage',
+  'لحم مقدد':'bacon','بيكون':'bacon',
+  'بط':'duck','حمام':'pigeon','حجل':'quail','ديك رومي':'turkey',
+
+  // Grains & Starches
+  'أرز':'rice','رز':'rice','ارز':'rice','أرز بسمتي':'basmati rice','رز شعرية':'vermicelli','رز بسمتي':'basmati rice',
+  'معكرونة':'pasta','مكرونة':'pasta','باستا':'pasta','سباغيتي':'spaghetti','نودلز':'noodles','فيتوتشيني':'fettuccine','بيني':'penne','مكرونة اسباجيتي':'spaghetti',
+  'طحين':'flour','دقيق':'flour','فرينة':'flour','سميد':'semolina','دقيق ابيض':'flour','دقيق أسمر':'whole wheat flour',
+  'عيش':'bread','خبز':'bread','توست':'bread','باتيه':'baguette','عيش بلدي':'flatbread','فلافل':'falafel','عيش توست':'bread',
+  'شوفان':'oats','برغل':'bulgur','كسكس':'couscous','فريك':'freekeh','قمح':'wheat',
   'بطاطس':'potato','بطاطا':'potato','بطاطا حلوة':'sweet potato',
+  'نشا':'cornstarch','نشا الذرة':'cornstarch',
+
+  // Dairy
+  'حليب':'milk','لبن':'yogurt','زبادي':'yogurt','روب':'yogurt','قشطة':'cream','كريمة':'cream','كريمة خفق':'heavy cream',
+  'جبنة':'cheese','جبن':'cheese','جبنة بيضاء':'white cheese','جبنة حلوم':'halloumi','موتزاريلا':'mozzarella','ريكوتا':'ricotta','بارميزان':'parmesan','شيدر':'cheddar','فيتا':'feta','جبنة كريمي':'cream cheese',
+  'زبدة':'butter','سمن':'ghee','سمنة':'ghee','سمن بلدي':'ghee',
+  'بيض':'egg','بيضة':'egg','بيضات':'eggs',
+
+  // Vegetables
+  'طماطم':'tomato','بندورة':'tomato','طمطم':'tomato','معجون طماطم':'tomato puree','صلصة طماطم':'tomato sauce','صلصة':'tomato sauce',
+  'بصل':'onion','بصلة':'onion','كراث':'shallot','بصل أخضر':'green onion','شبت':'green onion',
+  'ثوم':'garlic','توم':'garlic',
   'كوسة':'zucchini','كوسا':'zucchini',
   'باذنجان':'eggplant','بيتنجان':'eggplant',
-  'جزر':'carrot','فلفل':'pepper','فلفل أخضر':'green pepper','فلفل أحمر':'red pepper','فلفل حار':'chili',
-  'خيار':'cucumber','خس':'lettuce','ملفوف':'cabbage','قرنبيط':'cauliflower',
-  'سبانخ':'spinach','بروكلي':'broccoli','فاصوليا':'beans','عدس':'lentils',
+  'جزر':'carrot','فلفل':'pepper','فلفل أخضر':'green pepper','فلفل أحمر':'red pepper','فلفل حار':'chili','فلفل رومي':'bell pepper','شطة':'chili','هالبينو':'jalapeno',
+  'خيار':'cucumber','خس':'lettuce','ملفوف':'cabbage','قرنبيط':'cauliflower','ملفوف أحمر':'red cabbage',
+  'سبانخ':'spinach','بروكلي':'broccoli','فاصوليا':'beans','عدس':'lentils','فاصوليا بيضاء':'white beans','فاصوليا حمراء':'kidney beans',
   'حمص':'chickpeas','بازلاء':'peas','فطر':'mushroom','مشروم':'mushroom',
-  'بامية':'okra','لوبيا':'black eyed peas',
+  'بامية':'okra','لوبيا':'black eyed peas','لوبيا خضراء':'green beans',
+  'كرفس':'celery','فجل':'radish','القلقاس':'taro','بطاطا':'sweet potato',
+  'ذرة':'corn','حبة ذرة':'corn',
+
+  // Herbs & Spices
   'بقدونس':'parsley','نعناع':'mint','شبت':'dill','كزبرة':'coriander','جرجير':'arugula',
-  'ريحان':'basil','زعتر':'thyme','ورق غار':'bay leaf',
-  'ليمون':'lemon','عصرة ليمون':'lemon','برتقال':'orange','تفاح':'apple',
+  'ريحان':'basil','زعتر':'thyme','ورق غار':'bay leaf','زعتر فرنسي':'oregano',
+  'كمون':'cumin','قرفة':'cinnamon','كركم':'turmeric','زنجبيل':'ginger','هيل':'cardamom',
+  'فلفل أسود':'black pepper','بابريكا':'paprika','بهارات':'mixed spice','بهار':'mixed spice',
+  'مسمار':'clove','قرنفل':'clove','جوزة الطيب':'nutmeg','يانسون':'anise',
+  'شمر':'fennel','كرفس':'celery','كاري':'curry',
+
+  // Fruits
+  'ليمون':'lemon','عصرة ليمون':'lemon','عصير ليمون':'lemon juice','برتقال':'orange','تفاح':'apple',
   'موز':'banana','فراولة':'strawberry','عنب':'grapes','مانجو':'mango',
   'أناناس':'pineapple','تين':'fig','تمر':'dates','رمان':'pomegranate',
-  'زيت':'oil','زيت زيتون':'olive oil','ملح':'salt','سكر':'sugar','عسل':'honey',
-  'خل':'vinegar','صلصة':'sauce','طحينة':'tahini',
-  'كمون':'cumin','قرفة':'cinnamon','كركم':'turmeric','زنجبيل':'ginger','هيل':'cardamom',
-  'فلفل أسود':'black pepper','بابريكا':'paprika','بهارات':'mixed spice',
-  'ماء':'water','ماية':'water',
+  'مشمش':'apricot','خوخ':'peach','كمثرى':'pear','بطيخ':'watermelon','شمام':'melon',
+  'كريز':'cherry','فواكه':'fruit',
+
+  // Basics
+  'زيت':'oil','زيت زيتون':'olive oil','زيت ذرة':'vegetable oil','زيت عباد الشمس':'sunflower oil',
+  'ملح':'salt','سكر':'sugar','عسل':'honey','سكر بودرة':'powdered sugar','سكر ناعم':'brown sugar',
+  'خل':'vinegar','خل بلسمي':'balsamic vinegar','طحينة':'tahini','حمص':'chickpeas',
+  'ماء':'water','ماية':'water','ماء ورد':'rose water','ماء زهر':'orange blossom water',
+
+  // Nuts
   'جوز':'walnut','لوز':'almond','فستق':'pistachio','جوز الهند':'coconut','كاجو':'cashew',
-  'صنوبر':'pine nuts','بندق':'hazelnut','عين جمل':'walnut',
-  'شاي':'tea','قهوة':'coffee','كاكاو':'cocoa','شوكولاتة':'chocolate',
-  'فانيليا':'vanilla',
-  'دقيق ابيض':'white flour','دقيق أسمر':'whole wheat flour',
-  'نشا':'cornstarch','نشا الذرة':'cornstarch',
-  'صويا':'soy sauce','صوص الصويا':'soy sauce',
-  'عجينة':'dough','عجينة بف':'puff pastry','عجينة فيلو':'filo pastry',
+  'صنوبر':'pine nuts','بندق':'hazelnut','عين جمل':'walnut','مكسرات':'nuts',
+
+  // Beverages & Baking
+  'شاي':'tea','قهوة':'coffee','كاكاو':'cocoa','شوكولاتة':'chocolate','نوتيلا':'nutella',
+  'فانيليا':'vanilla','بيكنج باودر':'baking powder','بيكربونات الصودا':'baking soda','خميرة':'yeast','خميرة فورية':'instant yeast',
+  'عجينة':'dough','عجينة بف':'puff pastry','عجينة فيلو':'filo pastry','عجينة بيتزا':'pizza dough',
+
+  // Sauces & Condiments
+  'صويا':'soy sauce','صوص الصويا':'soy sauce','صوص':'sauce','كاتشاب':'ketchup','مايونيز':'mayonnaise','ماسترد':'mustard',
+  'حليب مكثف':'condensed milk',
+
+  // Synonyms / dialects
+  'رز مصري':'rice','ملوخية':'molokhia','كشري':'koshari','فول':'fava beans','طعمية':'falafel','مسقعة':'eggplant casserole',
+  'محشي':'stuffed vegetables','مكدوس':'stuffed eggplant','فتة':'fatta','شوربة':'soup','مرق':'broth',
+  'صلصة':'sauce','صوص':'sauce','توابل':'spices','بهارات':'mixed spice',
 };
 
-// ===== AREA MAPPING =====
+// ===== AREA → CUISINE MAPPING =====
 const areaMap={
-  'eastern':['Egyptian','Moroccan','Turkish','Syrian','Saudi Arabian','Tunisian','Algerian','Indian'],
-  'western':['American','British','French','Italian','Spanish','Canadian','Dutch','Greek','Irish','Portuguese','Croatian','Polish','Norwegian','Russian','Ukrainian','Jamaican','Mexican','Argentinian','Australian','Kenyan'],
-  'asian':['Chinese','Japanese','Thai','Vietnamese','Malaysian','Filipino']
+  'eastern':['Egyptian','Moroccan','Turkish','Syrian','Saudi Arabian','Tunisian','Algerian','Indian','Lebanese','Palestinian','Iraqi','Libyan','Sudanese','Omani','Yemeni','Emirati','Kuwaiti','Bahraini','Qatari'],
+  'western':['American','British','French','Italian','Spanish','Canadian','Dutch','Greek','Irish','Portuguese','Croatian','Polish','Norwegian','Russian','Ukrainian','Jamaican','Mexican','Argentinian','Australian','Kenyan','Vietnamese'],
+  'asian':['Chinese','Japanese','Thai','Vietnamese','Malaysian','Filipino','Indian']
 };
 const foodCats=['Beef','Chicken','Lamb','Pork','Seafood','Side','Starter','Breakfast','Goat','Vegan','Vegetarian','Pasta','Miscellaneous'];
+const dessertCats=['Dessert'];
+
+// ===== QUICK SUGGESTIONS =====
+const quickIngredients={
+  ar:['دجاج','أرز','طماطم','بصل','ثوم','بيض','حليب','زبدة','طحين','زيت زيتون','ليمون','بطاطس','لحمة','سمك','جزر','فلفل'],
+  en:['chicken','rice','tomato','onion','garlic','egg','milk','butter','flour','olive oil','lemon','potato','beef','fish','carrot','pepper'],
+  fr:['poulet','riz','tomate','oignon','ail','oeuf','lait','beurre','farine','huile d\'olive','citron','pomme de terre','boeuf','poisson','carotte','poivron']
+};
+
+function renderQuickChips(){
+  const c=document.getElementById('quickChips');
+  const items=quickIngredients[currentLang]||quickIngredients.ar;
+  c.innerHTML=items.map(item=>{
+    const eng=currentLang==='ar'?aliases[item.toLowerCase()]||item:item.toLowerCase();
+    return`<button class="quick-chip" onclick="quickAdd('${eng}','${item}')">${item}</button>`;
+  }).join('');
+}
+function quickAdd(eng,display){
+  if(!ingredients.includes(eng)){ingredients.push(eng);renderTags();}
+}
 
 // ===== I18N =====
 const i18n={
-  ar:{ideaOwner:'صاحب الفكرة',creatorDesc:'فكرة وتصميم تطبيقات ذكية',appSubtitle:'برنامج وصفات الطبخ الذكي',appDesc:'أدخل المكونات المتاحة في مطبخك وسنجد لك ألذ الوصفات!',cuisineType:'اتجاه وجنسية الطبخ',all:'الكل',eastern:'🍳 شرقي',western:'🍝 غربي',asian:'🍜 آسيوي',dishType:'نوع الطبق',allDishes:'الكل',food:'🥘 طعام',dessert:'🍰 حلويات',inputTitle:'المكونات المتاحة لديك الآن',inputHint:'أدخل مكوناً واضغط إضافة، أو اكتبها مفصولة بفواصل',addBtn:'➕ إضافة',searchBtn:'🔍 ابحث عن الوصفات',clearBtn:'🗑️ مسح الكل',searching:'جاري البحث عن ألذ الوصفات... 🔍',results:'النتائج',emptyTitle:'لم نجد وصفات مطابقة',emptyText:'جرّب إضافة مكونات أخرى!',footer:'فكرة: <strong>Emad Hamdy</strong> | البيانات: TheMealDB API',exactMatch:'تطابق كامل ✅',partialMatch:'تطابق جزئي',suggestion:'اقتراح 💡',addThis:'أضف لتحضيره:',ingredients:'المكونات',steps:'طريقة التحضير',video:'🎥 شاهد فيديو',category:'التصنيف',area:'المطبخ',enterIngredient:'الرجاء إدخال مكون واحد على الأقل!',fetchError:'حدث خطأ أثناء البحث. يرجى المحاولة مرة أخرى.',stepLabel:'الخطوة',source:'المصدر الأصلي',ingCount:'مكون'},
-  en:{ideaOwner:'Idea by',creatorDesc:'Smart app ideas & design',appSubtitle:'Smart Recipe Finder',appDesc:'Enter available ingredients and we\'ll find delicious recipes!',cuisineType:'Cuisine Type',all:'All',eastern:'🍳 Eastern',western:'🍝 Western',asian:'🍜 Asian',dishType:'Dish Type',allDishes:'All',food:'🥘 Food',dessert:'🍰 Desserts',inputTitle:'Available Ingredients',inputHint:'Type an ingredient and press Add, or separate with commas',addBtn:'➕ Add',searchBtn:'🔍 Find Recipes',clearBtn:'🗑️ Clear All',searching:'Searching for delicious recipes... 🔍',results:'Results',emptyTitle:'No matching recipes found',emptyText:'Try adding different ingredients!',footer:'Idea: <strong>Emad Hamdy</strong> | Data: TheMealDB API',exactMatch:'Exact Match ✅',partialMatch:'Partial Match',suggestion:'Suggestion 💡',addThis:'Add this to make it:',ingredients:'Ingredients',steps:'Instructions',video:'🎥 Watch Video',category:'Category',area:'Cuisine',enterIngredient:'Please enter at least one ingredient!',fetchError:'Error fetching recipes. Please try again.',stepLabel:'Step',source:'Source',ingCount:'ingredients'},
-  fr:{ideaOwner:'Idée par',creatorDesc:'Idées et conception d\'apps',appSubtitle:'Chercheur de Recettes',appDesc:'Entrez les ingrédients et nous trouverons des recettes!',cuisineType:'Cuisine',all:'Tous',eastern:'🍳 Orientale',western:'🍝 Occidentale',asian:'🍜 Asiatique',dishType:'Plat',allDishes:'Tous',food:'🥘 Plat',dessert:'🍰 Desserts',inputTitle:'Ingrédients Disponibles',inputHint:'Tapez un ingrédient et appuyez sur Ajouter',addBtn:'➕ Ajouter',searchBtn:'🔍 Chercher',clearBtn:'🗑️ Effacer',searching:'Recherche... 🔍',results:'Résultats',emptyTitle:'Aucune recette trouvée',emptyText:'Essayez d\'autres ingrédients!',footer:'Idée: <strong>Emad Hamdy</strong> | Données: TheMealDB API',exactMatch:'Exacte ✅',partialMatch:'Partielle',suggestion:'Suggestion 💡',addThis:'Ajoutez ceci:',ingredients:'Ingrédients',steps:'Instructions',video:'🎥 Vidéo',category:'Catégorie',area:'Cuisine',enterIngredient:'Entrez au moins un ingrédient!',fetchError:'Erreur. Réessayez.',stepLabel:'Étape',source:'Source',ingCount:'ingrédients'}
+  ar:{
+    appName:'ست الكل',appSubtitle:'برنامج وصفات الطبخ الذكي',appDesc:'أدخل المكونات المتاحة في مطبخك وسنجد لك ألذ الوصفات الممكنة!',
+    cuisineType:'اتجاه وجنسية الطبخ',all:'الكل',eastern:'🍳 شرقي',western:'🍝 غربي',asian:'🍜 آسيوي',
+    dishType:'نوع الطبق',allDishes:'الكل',food:'🥘 طعام',dessert:'🍰 حلويات',
+    inputTitle:'المكونات المتاحة لديك الآن',inputHint:'أدخل مكوناً واضغط إضافة، أو اكتبها مفصولة بفواصل',
+    addBtn:'➕ إضافة',searchBtn:'🔍 ابحث عن الوصفات',clearBtn:'🗑️ مسح الكل',
+    searching:'جاري البحث عن ألذ الوصفات... 🔍',results:'النتائج',
+    emptyTitle:'لم نجد وصفات مطابقة',emptyText:'جرّب إضافة مكونات أخرى أو تقليل عدد المكونات!',
+    footer:'البيانات: TheMealDB API',footerCopy:'© 2026 ست الكل - جميع الحقوق محفوظة',
+    exactMatch:'تطابق كامل ✅',highMatch:'تطابق عالي',partialMatch:'تطابق جزئي',lowMatch:'مقترح 💡',
+    addThis:'أضف لتحضيره:',ingredients:'المكونات',steps:'طريقة التحضير',
+    video:'🎥 شاهد فيديو',category:'التصنيف',area:'المطبخ',
+    enterIngredient:'الرجاء إدخال مكون واحد على الأقل!',fetchError:'حدث خطأ أثناء البحث. يرجى المحاولة مرة أخرى.',
+    stepLabel:'الخطوة',source:'المصدر الأصلي',ingCount:'مكون',
+    aboutNav:'من نحن',privacyNav:'الخصوصية',termsNav:'الشروط',backBtn:'العودة للرئيسية',
+    sortMatch:'ترتيب حسب التطابق',sortName:'ترتيب أبجدي',sortIng:'الأقل مكونات',
+    quickLabel:'إضافات سريعة:',
+    aboutTitle:'👩‍🍳 من نحن',aboutP1:'مرحباً بك في <strong>ست الكل (Set El Kol)</strong>، تطبيق الطبخ الذكي الذي يساعدك في اكتشاف ألذ الوصفات بناءً على المكونات المتاحة لديك!',
+    aboutH2_1:'🎯 رسالتنا',aboutP2:'نؤمن بأن الطبخ يجب أن يكون ممتعاً وسهلًا. لذلك صممنا هذا التطبيق لمساعدتك في تحويل أي مكونات لديك إلى وجبات لذيذة ومتنوعة من مختلف المطابخ العالمية.',
+    aboutH2_2:'✨ ما يميزنا',aboutL1:'بحث ذكي يطابق المكونات المتاحة لديك مع آلاف الوصفات',aboutL2:'دعم اللغة العربية والإنجليزية والفرنسية',aboutL3:'وصفات من مطابخ متنوعة: شرقية وغربية وآسيوية',aboutL4:'واجهة سهلة وبسيطة تناسب الجميع',aboutL5:'بدون إعلانات مزعجة أو رسوم خفية',
+    aboutH2_3:'📊 مصدر البيانات',aboutP3:'يستخدم التطبيق قاعدة بيانات TheMealDB المفتوحة والمجانية، التي تحتوي على مئات الوصفات من جميع أنحاء العالم.',
+    aboutH2_4:'📧 تواصل معنا',aboutP4:'إذا كان لديك أي اقتراح أو ملاحظة، لا تتردد في التواصل معنا. نحن نقدر ملاحظاتك ونسعى دائماً لتحسين التطبيق.',
+    aboutUpdate:'آخر تحديث: أبريل 2026',
+    privacyTitle:'🔒 سياسة الخصوصية',privacyP1:'نحن في <strong>ست الكل (Set El Kol)</strong> نحترم خصوصيتك ونلتزم بحماية بياناتك الشخصية.',
+    privH2_1:'1. المعلومات التي نجمعها',privP1:'لا يجمع التطبيق أي بيانات شخصية تعريفية.',privL1:'لا نطلب التسجيل أو إنشاء حساب',privL2:'لا نجمع عنوان البريد الإلكتروني أو رقم الهاتف',privL3:'لا نتتبع موقعك الجغرافي',privL4:'لا نصل إلى الكاميرا أو الميكروفون أو جهات الاتصال',
+    privH2_2:'2. ملفات تعريف الارتباط',privP2:'يستخدم التطبيق ملفات تعريف الارتباط الأساسية لحفظ تفضيلاتك مثل اللغة.',
+    privH2_3:'3. خدمات الطرف الثالث',privP3:'يستخدم التطبيق واجهة TheMealDB للحصول على بيانات الوصفات.',
+    privH2_4:'4. أمان البيانات',privP4:'التطبيق يستخدم اتصال HTTPS آمن لجميع الطلبات.',
+    privH2_5:'5. خصوصية الأطفال',privP5:'التطبيق مناسب لجميع الأعمار ولا يجمع عمداً أي معلومات من الأطفال.',
+    privH2_6:'6. التغييرات',privP6:'قد نقوم بتحديث سياسة الخصوصية من وقت لآخر.',
+    privH2_7:'7. موافقتك',privP7:'باستخدام هذا التطبيق، فإنك توافق على سياسة الخصوصية هذه.',
+    privUpdate:'آخر تحديث: أبريل 2026',
+    termsTitle:'📜 شروط الاستخدام',termsP1:'باستخدام تطبيق <strong>ست الكل (Set El Kol)</strong>، فإنك توافق على الشروط والأحكام التالية.',
+    termsH2_1:'1. القبول والشروط',termsP2:'باستخدام هذا التطبيق، فإنك تقر بأنك قرأت وفهمت ووافقت على الالتزام بهذه الشروط.',
+    termsH2_2:'2. الاستخدام المسموح',termsL1:'يُسمح لك باستخدام التطبيق للأغراض الشخصية وغير التجارية فقط',termsL2:'يُمنع استخدام التطبيق لأي أغراض غير قانونية',termsL3:'يُمنع محاولة الوصول غير المصرح به',
+    termsH2_3:'3. دقة المعلومات',termsP3:'يتم تقديم الوصفات لأغراض إعلامية فقط. نحن لا نضمن دقة المعلومات.',
+    termsH2_4:'4. إخلاء المسؤولية الصحية',termsP4:'التطبيق ليس بديلاً عن المشورة الطبية أو الغذائية المهنية.',
+    termsH2_5:'5. الملكية الفكرية',termsP5:'جميع حقوق الملكية الفكرية محفوظة. بيانات الوصفات مملوكة لـ TheMealDB.',
+    termsH2_6:'6. إخلاء الضمانات',termsP6:'يتم تقديم التطبيق "كما هو" دون أي ضمانات.',
+    termsH2_7:'7. تحديد المسؤولية',termsP7:'لن نكون مسؤولين عن أي أضرار ناتجة عن استخدام التطبيق.',
+    termsH2_8:'8. التعديلات',termsP8:'نحتفظ بالحق في تعديل هذه الشروط في أي وقت.',
+    termsH2_9:'9. القانون المعمول به',termsP9:'تخضع هذه الشروط للقوانين المعمول بها.',
+    termsUpdate:'آخر تحديث: أبريل 2026',
+    totalIng:'إجمالي المكونات'
+  },
+  en:{
+    appName:'Set El Kol',appSubtitle:'Smart Recipe Finder',appDesc:'Enter available ingredients and we\'ll find the best possible recipes!',
+    cuisineType:'Cuisine Type',all:'All',eastern:'🍳 Eastern',western:'🍝 Western',asian:'🍜 Asian',
+    dishType:'Dish Type',allDishes:'All',food:'🥘 Food',dessert:'🍰 Desserts',
+    inputTitle:'Available Ingredients',inputHint:'Type an ingredient and press Add, or separate with commas',
+    addBtn:'➕ Add',searchBtn:'🔍 Find Recipes',clearBtn:'🗑️ Clear All',
+    searching:'Searching for delicious recipes... 🔍',results:'Results',
+    emptyTitle:'No matching recipes found',emptyText:'Try adding different ingredients or reducing the number!',
+    footer:'Data: TheMealDB API',footerCopy:'© 2026 Set El Kol - All Rights Reserved',
+    exactMatch:'Exact Match ✅',highMatch:'High Match',partialMatch:'Partial Match',lowMatch:'Suggestion 💡',
+    addThis:'Add this to make it:',ingredients:'Ingredients',steps:'Instructions',
+    video:'🎥 Watch Video',category:'Category',area:'Cuisine',
+    enterIngredient:'Please enter at least one ingredient!',fetchError:'Error fetching recipes. Please try again.',
+    stepLabel:'Step',source:'Source',ingCount:'ingredients',
+    aboutNav:'About',privacyNav:'Privacy',termsNav:'Terms',backBtn:'Back to Home',
+    sortMatch:'Sort by Match',sortName:'Sort A-Z',sortIng:'Fewest Ingredients',
+    quickLabel:'Quick add:',
+    aboutTitle:'👩‍🍳 About Us',aboutP1:'Welcome to <strong>Set El Kol</strong>, a smart cooking app that helps you discover delicious recipes based on available ingredients!',
+    aboutH2_1:'🎯 Our Mission',aboutP2:'We believe cooking should be fun and easy. This app helps you turn any ingredients into delicious, diverse meals from world cuisines.',
+    aboutH2_2:'✨ What Makes Us Special',aboutL1:'Smart search matching your available ingredients with thousands of recipes',aboutL2:'Arabic, English, and French language support',aboutL3:'Recipes from diverse cuisines: Eastern, Western, and Asian',aboutL4:'Simple, user-friendly interface for everyone',aboutL5:'No annoying ads or hidden fees',
+    aboutH2_3:'📊 Data Source',aboutP3:'The app uses the free, open <a href="https://www.themealdb.com" target="_blank" rel="noopener">TheMealDB</a> database containing hundreds of recipes worldwide.',
+    aboutH2_4:'📧 Contact Us',aboutP4:'If you have suggestions or feedback, feel free to reach out. We value your input and always strive to improve.',
+    aboutUpdate:'Last updated: April 2026',
+    privacyTitle:'🔒 Privacy Policy',privacyP1:'At <strong>Set El Kol</strong>, we respect your privacy and are committed to protecting your personal data.',
+    privH2_1:'1. Information We Collect',privP1:'The app does not collect any personally identifiable data.',privL1:'No registration or account creation required',privL2:'No email addresses or phone numbers collected',privL3:'No location tracking',privL4:'No access to camera, microphone, or contacts',
+    privH2_2:'2. Cookies',privP2:'The app uses essential cookies to save preferences like your selected language.',
+    privH2_3:'3. Third-Party Services',privP3:'The app uses TheMealDB API for recipe data.',
+    privH2_4:'4. Data Security',privP4:'The app uses secure HTTPS connections for all requests.',
+    privH2_5:'5. Children\'s Privacy',privP5:'The app is suitable for all ages and does not knowingly collect data from children under 13.',
+    privH2_6:'6. Changes',privP6:'We may update this privacy policy from time to time.',
+    privH2_7:'7. Your Consent',privP7:'By using this app, you consent to this privacy policy.',
+    privUpdate:'Last updated: April 2026',
+    termsTitle:'📜 Terms of Use',termsP1:'By using <strong>Set El Kol</strong>, you agree to the following terms and conditions.',
+    termsH2_1:'1. Acceptance',termsP2:'By using this app, you acknowledge that you have read, understood, and agree to these terms.',
+    termsH2_2:'2. Permitted Use',termsL1:'Personal, non-commercial use only',termsL2:'No unlawful use permitted',termsL3:'No unauthorized system access',
+    termsH2_3:'3. Information Accuracy',termsP3:'Recipes are provided for informational purposes only. We do not guarantee accuracy.',
+    termsH2_4:'4. Health Disclaimer',termsP4:'This app is not a substitute for professional medical or nutritional advice.',
+    termsH2_5:'5. Intellectual Property',termsP5:'All IP rights are reserved. Recipe data is owned by TheMealDB.',
+    termsH2_6:'6. Warranty Disclaimer',termsP6:'The app is provided "as is" without warranties of any kind.',
+    termsH2_7:'7. Limitation of Liability',termsP7:'We shall not be liable for any damages arising from app use.',
+    termsH2_8:'8. Modifications',termsP8:'We reserve the right to modify these terms at any time.',
+    termsH2_9:'9. Governing Law',termsP9:'These terms are governed by applicable laws.',
+    termsUpdate:'Last updated: April 2026',
+    totalIng:'total ingredients'
+  },
+  fr:{
+    appName:'Set El Kol',appSubtitle:'Chercheur de Recettes Intelligent',appDesc:'Entrez les ingrédients disponibles et nous trouverons les meilleures recettes!',
+    cuisineType:'Type de Cuisine',all:'Tous',eastern:'🍳 Orientale',western:'🍝 Occidentale',asian:'🍜 Asiatique',
+    dishType:'Type de Plat',allDishes:'Tous',food:'🥘 Plat',dessert:'🍰 Desserts',
+    inputTitle:'Ingrédients Disponibles',inputHint:'Tapez un ingrédient et appuyez sur Ajouter',
+    addBtn:'➕ Ajouter',searchBtn:'🔍 Chercher',clearBtn:'🗑️ Effacer',
+    searching:'Recherche en cours... 🔍',results:'Résultats',
+    emptyTitle:'Aucune recette trouvée',emptyText:'Essayez d\'autres ingrédients!',
+    footer:'Données: TheMealDB API',footerCopy:'© 2026 Set El Kol - Tous droits réservés',
+    exactMatch:'Correspondance Exacte ✅',highMatch:'Correspondance Élevée',partialMatch:'Correspondance Partielle',lowMatch:'Suggestion 💡',
+    addThis:'Ajoutez ceci:',ingredients:'Ingrédients',steps:'Instructions',
+    video:'🎥 Vidéo',category:'Catégorie',area:'Cuisine',
+    enterIngredient:'Entrez au moins un ingrédient!',fetchError:'Erreur. Réessayez.',
+    stepLabel:'Étape',source:'Source',ingCount:'ingrédients',
+    aboutNav:'À propos',privacyNav:'Confidentialité',termsNav:'Conditions',backBtn:'Retour',
+    sortMatch:'Trier par correspondance',sortName:'Trier A-Z',sortIng:'Moins d\'ingrédients',
+    quickLabel:'Ajout rapide:',
+    aboutTitle:'👩‍🍳 À Propos',aboutP1:'Bienvenue sur <strong>Set El Kol</strong>, une application de cuisine intelligente!',
+    aboutH2_1:'🎯 Notre Mission',aboutP2:'Nous croyons que la cuisine doit être amusante et facile.',
+    aboutH2_2:'✨ Ce Qui Nous Rend Spéciaux',aboutL1:'Recherche intelligente d\'ingrédients',aboutL2:'Support multilingue',aboutL3:'Recettes de cuisines diverses',aboutL4:'Interface simple',aboutL5:'Sans publicité',
+    aboutH2_3:'📊 Source de Données',aboutP3:'L\'application utilise la base <a href="https://www.themealdb.com" target="_blank" rel="noopener">TheMealDB</a>.',
+    aboutH2_4:'📧 Contact',aboutP4:'N\'hésitez pas à nous contacter avec vos suggestions.',
+    aboutUpdate:'Dernière mise à jour: Avril 2026',
+    privacyTitle:'🔒 Politique de Confidentialité',privacyP1:'Chez <strong>Set El Kol</strong>, nous respectons votre vie privée.',
+    privH2_1:'1. Informations Collectées',privP1:'L\'application ne collecte aucune donnée personnelle.',privL1:'Pas d\'inscription',privL2:'Pas de collecte d\'email',privL3:'Pas de géolocalisation',privL4:'Pas d\'accès caméra/micro',
+    privH2_2:'2. Cookies',privP2:'Cookies essentiels pour les préférences uniquement.',
+    privH2_3:'3. Services Tiers',privP3:'Utilisation de l\'API TheMealDB.',
+    privH2_4:'4. Sécurité',privP4:'Connexions HTTPS sécurisées.',
+    privH2_5:'5. Enfants',privP5:'Adapté à tous les âges.',
+    privH2_6:'6. Modifications',privP6:'Mise à jour occasionnelle possible.',
+    privH2_7:'7. Consentement',privP7:'Utilisation = consentement.',
+    privUpdate:'Dernière mise à jour: Avril 2026',
+    termsTitle:'📜 Conditions d\'Utilisation',termsP1:'En utilisant <strong>Set El Kol</strong>, vous acceptez les conditions suivantes.',
+    termsH2_1:'1. Acceptation',termsP2:'Utilisation = acceptation des conditions.',
+    termsH2_2:'2. Usage Autorisé',termsL1:'Usage personnel uniquement',termsL2:'Usage illégal interdit',termsL3:'Accès non autorisé interdit',
+    termsH2_3:'3. Précision',termsP3:'Recettes fournies à titre informatif.',
+    termsH2_4:'4. Santé',termsP4:'Pas un substitut à un avis médical.',
+    termsH2_5:'5. Propriété Intellectuelle',termsP5:'Droits réservés.',
+    termsH2_6:'6. Garanties',termsP6:'Application fournie "en l\'état".',
+    termsH2_7:'7. Responsabilité',termsP7:'Pas de responsabilité pour les dommages.',
+    termsH2_8:'8. Modifications',termsP8:'Modifications possibles à tout moment.',
+    termsH2_9:'9. Loi Applicable',termsP9:'Soumis aux lois applicables.',
+    termsUpdate:'Dernière mise à jour: Avril 2026',
+    totalIng:'ingrédients au total'
+  }
 };
 
+// ===== PAGE NAVIGATION =====
+function showPage(page){
+  document.querySelectorAll('.page-view').forEach(p=>p.classList.remove('active'));
+  if(page==='main'){
+    document.getElementById('mainView').classList.remove('hidden');
+  }else{
+    document.getElementById('mainView').classList.add('hidden');
+    document.getElementById('page-'+page).classList.add('active');
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ===== LANGUAGE =====
 function setLang(l,btn){
   currentLang=l;
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
@@ -317,14 +695,18 @@ function setLang(l,btn){
   document.documentElement.lang=l;
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const k=el.dataset.i18n;
-    if(i18n[l][k])el.innerHTML=i18n[l][k];
+    if(i18n[l]&&i18n[l][k])el.innerHTML=i18n[l][k];
   });
   document.getElementById('ingredientInput').placeholder=l==='ar'?'مثال: دجاج، أرز، طماطم...':l==='en'?'e.g. chicken, rice, tomato...':'ex: poulet, riz, tomate...';
+  renderQuickChips();
   if(allResults.length>0)renderResults(allResults);
 }
+
+// ===== FILTERS =====
 function setCuisine(btn,c){currentCuisine=c;document.querySelectorAll('#cuisineFilters .filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
 function setCategory(btn,c){currentCategory=c;document.querySelectorAll('#categoryFilters .filter-btn').forEach(b=>b.classList.remove('active-green'));btn.classList.add('active-green');}
 
+// ===== INGREDIENT MANAGEMENT =====
 function addIngredient(){
   const inp=document.getElementById('ingredientInput');
   const val=inp.value.trim();
@@ -333,13 +715,13 @@ function addIngredient(){
     const low=p.toLowerCase();
     if(!ingredients.includes(low))ingredients.push(low);
   });
-  inp.value='';renderTags();
+  inp.value='';renderTags();inp.focus();
 }
 function removeIngredient(i){ingredients.splice(i,1);renderTags();}
 function renderTags(){
   document.getElementById('tagsContainer').innerHTML=ingredients.map((ing,i)=>{
     const ar=Object.keys(aliases).find(k=>aliases[k]===ing)||ing;
-    return`<span class="tag">${currentLang==='ar'?ar:ing}<span class="remove" onclick="removeIngredient(${i})">✕</span></span>`;
+    return`<span class="tag" role="listitem">${currentLang==='ar'?ar:ing}<span class="remove" onclick="removeIngredient(${i})" role="button" aria-label="حذف">✕</span></span>`;
   }).join('');
 }
 function clearAll(){
@@ -350,15 +732,37 @@ function clearAll(){
 }
 function normalize(ing){return aliases[ing.toLowerCase().trim()]||ing.toLowerCase().trim();}
 
-// ===== CACHE =====
+// ===== FETCH WITH CACHE =====
 async function fetchJSON(url){
   if(mealCache[url])return mealCache[url];
   try{
     const r=await fetch(url);
+    if(!r.ok)return null;
     const d=await r.json();
     mealCache[url]=d;
     return d;
   }catch(e){return null;}
+}
+
+// ===== SIMILARITY HELPERS =====
+function wordOverlap(a,b){
+  const wa=a.split(/\s+/),wb=b.split(/\s+/);
+  let hits=0;
+  for(const x of wa)for(const y of wb){
+    if(x.length>=2&&y.length>=2&&(x===y||x.includes(y)||y.includes(x)))hits++;
+  }
+  return hits/Math.max(wa.length,wb.length);
+}
+function ingredientMatch(userIng,mealIng){
+  const u=userIng.toLowerCase().trim();
+  const m=mealIng.toLowerCase().trim();
+  if(m===u)return 1;
+  if(m.length>=3&&u.length>=3){
+    if(m.includes(u)||u.includes(m))return 0.9;
+  }
+  const wo=wordOverlap(m,u);
+  if(wo>0.5)return 0.7*wo;
+  return 0;
 }
 
 // ===== MAIN SEARCH =====
@@ -374,43 +778,41 @@ async function searchRecipes(){
   const userIngs=[...new Set(ingredients.map(normalize))];
 
   try{
-    // STEP 1: Search API for each ingredient
-    const candidateMap=new Map(); // id -> {matchCount, matchedIngs, thumb, name}
-
-    for(const ing of userIngs){
-      const data=await fetchJSON(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${encodeURIComponent(ing)}`);
-      if(data&&data.meals){
-        data.meals.forEach(m=>{
-          if(!candidateMap.has(m.idMeal)){
-            candidateMap.set(m.idMeal,{matchCount:1,matchedIngs:[ing],thumb:m.strMealThumb,name:m.strMeal});
-          }else{
-            const ex=candidateMap.get(m.idMeal);
-            if(!ex.matchedIngs.includes(ing)){ex.matchCount++;ex.matchedIngs.push(ing);}
-          }
-        });
-      }
-    }
-
-    // STEP 2: Also search by ALL categories to catch name-based matches
-    const allCats=[...foodCats,'Dessert'];
-    const catPromises=allCats.map(c=>fetchJSON(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${c}`));
-    const catResults=await Promise.all(catPromises);
-    catResults.forEach(data=>{
+    // PHASE 1: API search by each ingredient
+    const candidateMap=new Map();
+    const apiPromises=userIngs.map(ing=>fetchJSON(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${encodeURIComponent(ing)}`));
+    const apiResults=await Promise.all(apiPromises);
+    apiResults.forEach((data,idx)=>{
       if(!data||!data.meals)return;
       data.meals.forEach(m=>{
-        const name=m.strMeal.toLowerCase();
-        let hits=0;const hitIngs=[];
-        for(const u of userIngs){
-          if(name.includes(u)){hits++;hitIngs.push(u);}
-        }
-        if(hits>0&&!candidateMap.has(m.idMeal)){
-          candidateMap.set(m.idMeal,{matchCount:hits,matchedIngs:hitIngs,thumb:m.strMealThumb,name:m.strMeal});
-        }else if(hits>0&&candidateMap.has(m.idMeal)){
+        if(!candidateMap.has(m.idMeal)){
+          candidateMap.set(m.idMeal,{id:m.idMeal,thumb:m.strMealThumb,name:m.strMeal,apiHits:1,apiIngs:[userIngs[idx]]});
+        }else{
           const ex=candidateMap.get(m.idMeal);
-          ex.matchCount=Math.max(ex.matchCount,hits+1); // boost if found both ways
+          if(!ex.apiIngs.includes(userIngs[idx])){ex.apiHits++;ex.apiIngs.push(userIngs[idx]);}
         }
       });
     });
+
+    // PHASE 2: If few results from API, also try name search via categories
+    if(candidateMap.size<20){
+      const allCats=[...foodCats,'Dessert'];
+      const catResults=await Promise.all(allCats.map(c=>fetchJSON(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${c}`)));
+      catResults.forEach(data=>{
+        if(!data||!data.meals)return;
+        data.meals.forEach(m=>{
+          if(candidateMap.has(m.idMeal))return;
+          const name=m.strMeal.toLowerCase();
+          let nameHits=0;
+          for(const u of userIngs){
+            if(name.includes(u))nameHits++;
+          }
+          if(nameHits>0){
+            candidateMap.set(m.idMeal,{id:m.idMeal,thumb:m.strMealThumb,name:m.strMeal,apiHits:nameHits,apiIngs:userIngs.filter(u=>name.includes(u))});
+          }
+        });
+      });
+    }
 
     if(!candidateMap.size){
       document.getElementById('loading').classList.remove('show');
@@ -419,44 +821,75 @@ async function searchRecipes(){
       return;
     }
 
-    // STEP 3: Sort by match count, fetch details for top candidates
-    const sorted=[...candidateMap.entries()].sort((a,b)=>b[1].matchCount-a[1].matchCount).slice(0,50);
+    // PHASE 3: Fetch detailed info for top candidates
+    const sorted=[...candidateMap.entries()].sort((a,b)=>b[1].apiHits-a[1].apiHits).slice(0,60);
     const detailedMeals=[];
-    for(let i=0;i<sorted.length;i+=8){
-      const batch=sorted.slice(i,i+8);
+    for(let i=0;i<sorted.length;i+=10){
+      const batch=sorted.slice(i,i+10);
       const results=await Promise.all(batch.map(([id])=>fetchJSON(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)));
       results.forEach(d=>{if(d&&d.meals&&d.meals[0])detailedMeals.push(d.meals[0]);});
     }
 
-    // STEP 4: Score each meal by ingredient match
+    // PHASE 4: Advanced scoring
     const scored=[];
     detailedMeals.forEach(meal=>{
+      // Extract meal ingredients
       const mealIngs=[];
       for(let i=1;i<=20;i++){
         const ing=meal[`strIngredient${i}`];
-        if(ing&&ing.trim())mealIngs.push(ing.trim().toLowerCase());
+        const ms=meal[`strMeasure${i}`];
+        if(ing&&ing.trim()&&ing.trim().length>0)mealIngs.push({name:ing.trim().toLowerCase(),measure:(ms||'').trim()});
       }
-      let matchCount=0;
-      const matched=[];
+      if(!mealIngs.length)return;
+
+      // Calculate match score
+      let totalScore=0;
+      const matchedUserIngs=[];
+      const matchedMealIngs=[];
+
       for(const u of userIngs){
-        const found=mealIngs.some(mi=>{
-          if(mi===u)return true;
-          if(mi.length>2&&u.length>2&&(mi.includes(u)||u.includes(mi)))return true;
-          const mw=mi.split(/\s+/),uw=u.split(/\s+/);
-          return mw.some(a=>uw.some(b=>a.includes(b)||b.includes(a)));
-        });
-        if(found){matchCount++;matched.push(u);}
+        let bestMatch=0;
+        let bestMealIng=null;
+        for(const mi of mealIngs){
+          const s=ingredientMatch(u,mi.name);
+          if(s>bestMatch){bestMatch=s;bestMealIng=mi.name;}
+        }
+        if(bestMatch>=0.5){
+          totalScore+=bestMatch;
+          matchedUserIngs.push(u);
+          if(bestMealIng)matchedMealIngs.push(bestMealIng);
+        }
       }
-      if(matchCount>0){
-        const isExact=matchCount===userIngs.length;
-        scored.push({...meal,matchCount,matchedUserIngs:matched,totalUserIngs:userIngs.length,isExact,pct:Math.round((matchCount/userIngs.length)*100)});
+
+      if(totalScore>0){
+        const pct=Math.round((matchedUserIngs.length/userIngs.length)*100);
+        const exact=matchedUserIngs.length===userIngs.length&&totalScore>=userIngs.length*0.9;
+        const missingCount=mealIngs.length-matchedMealIngs.length;
+
+        // Bonus for having fewer extra ingredients needed
+        const simplicityBonus=Math.max(0,1-(missingCount/15));
+
+        const finalScore=totalScore*(1+simplicityBonus*0.3);
+
+        scored.push({
+          ...meal,
+          matchCount:matchedUserIngs.length,
+          matchedUserIngs,
+          matchedMealIngs,
+          totalUserIngs:userIngs.length,
+          isExact:exact,
+          pct,
+          totalScore:finalScore,
+          missingCount,
+          mealIngCount:mealIngs.length
+        });
       }
     });
 
     scored.sort((a,b)=>{
       if(a.isExact!==b.isExact)return b.isExact-a.isExact;
-      if(a.matchCount!==b.matchCount)return b.matchCount-a.matchCount;
-      return b.pct-a.pct;
+      if(Math.abs(a.totalScore-b.totalScore)>0.5)return b.totalScore-a.totalScore;
+      return a.missingCount-b.missingCount;
     });
 
     allResults=scored.slice(0,50);
@@ -474,8 +907,21 @@ async function searchRecipes(){
   }
 }
 
-// ===== RENDER =====
-function renderResults(meals){
+// ===== SORT =====
+function sortResults(){
+  const v=document.getElementById('sortSelect').value;
+  const sorted=[...allResults];
+  if(v==='name')sorted.sort((a,b)=>a.strMeal.localeCompare(b.strMeal));
+  else if(v==='ingredients')sorted.sort((a,b)=>a.mealIngCount-b.mealIngCount);
+  else sorted.sort((a,b)=>{
+    if(a.isExact!==b.isExact)return b.isExact-a.isExact;
+    return b.totalScore-a.totalScore;
+  });
+  renderResults(sorted,false);
+}
+
+// ===== RENDER RESULTS =====
+function renderResults(meals,animate=true){
   const grid=document.getElementById('recipeGrid');
   grid.innerHTML='';
   document.getElementById('results').style.display='block';
@@ -489,54 +935,65 @@ function renderResults(meals){
       if(ing&&ing.trim())ings.push({ingredient:ing.trim(),measure:(ms||'').trim()});
     }
     const card=document.createElement('div');
-    card.className='recipe-card animate-in';
-    card.style.animationDelay=`${idx*0.05}s`;
+    card.className='recipe-card';
+    if(animate)card.classList.add('animate-in');
+    if(animate)card.style.animationDelay=`${idx*0.05}s`;
     card.onclick=()=>openModal(meal,ings);
 
-    let badge;
-    if(meal.isExact)badge=`<span class="match-badge exact">${i18n[currentLang].exactMatch}</span>`;
-    else if(meal.pct>=50)badge=`<span class="match-badge partial">${i18n[currentLang].partialMatch} ${meal.pct}%</span>`;
-    else badge=`<span class="match-badge suggest">${i18n[currentLang].suggestion}</span>`;
+    let badge,badgeClass;
+    if(meal.isExact){badge=i18n[currentLang].exactMatch;badgeClass='exact';}
+    else if(meal.pct>=75){badge=i18n[currentLang].highMatch;badgeClass='high';}
+    else if(meal.pct>=40){badge=i18n[currentLang].partialMatch;badgeClass='partial';}
+    else{badge=i18n[currentLang].lowMatch;badgeClass='low';}
 
-    const barColor=meal.isExact?'var(--secondary)':meal.pct>=50?'#1976D2':'var(--accent)';
-    const bar=`<div class="match-bar"><div class="match-bar-fill"><div class="match-bar-fill-inner" style="width:${meal.pct}%;background:${barColor}"></div></div><span class="match-bar-label">${meal.matchCount}/${meal.totalUserIngs}</span></div>`;
+    const barColor=meal.isExact?'var(--secondary)':meal.pct>=75?'#1976D2':meal.pct>=40?'var(--accent)':'#9E9E9E';
 
+    // Missing ingredients suggestion
     let sug='';
     if(!meal.isExact){
       const mi=[];
       for(let i=1;i<=20;i++){const ing=meal[`strIngredient${i}`];if(ing&&ing.trim())mi.push(ing.trim().toLowerCase());}
-      const miss=mi.filter(m=>!meal.matchedUserIngs.some(u=>m.includes(u)||u.includes(m)));
-      if(miss.length>0&&miss.length<=5)sug=`<div class="suggest-box"><div class="suggest-title">💡 ${i18n[currentLang].addThis}</div><div class="suggest-text">${miss.slice(0,4).map(m=>`<span class="highlight">${m}</span>`).join(' + ')}</div></div>`;
+      const miss=mi.filter(m=>!meal.matchedMealIngs.some(mm=>m===mm));
+      const missClean=miss.filter(m=>m.length>1&&!['',' ','water','salt','oil'].includes(m));
+      if(missClean.length>0&&missClean.length<=6){
+        sug=`<div class="suggest-box"><div class="suggest-title">💡 ${i18n[currentLang].addThis}</div><div class="suggest-text">${missClean.slice(0,5).map(m=>`<span class="highlight">${m}</span>`).join(' + ')}</div></div>`;
+      }
     }
 
     card.innerHTML=`
-      <div class="recipe-img"><img src="${meal.strMealThumb}/preview" alt="${meal.strMeal}" loading="lazy">
+      <div class="recipe-img"><img src="${meal.strMealThumb}/preview" alt="${meal.strMeal}" loading="lazy" onerror="this.src='${meal.strMealThumb}'">
         <span class="recipe-category">${meal.strCategory||''}</span><span class="recipe-area">${meal.strArea||''}</span></div>
-      <div class="recipe-body">${badge}
+      <div class="recipe-body">
+        <span class="match-badge ${badgeClass}">${badge}</span>
         <div class="recipe-title">${meal.strMeal}</div>
         <div class="recipe-tags">${meal.strCategory?`<span>${meal.strCategory}</span>`:''}${meal.strArea?`<span>${meal.strArea}</span>`:''}<span>${ings.length} ${i18n[currentLang].ingCount}</span></div>
-        ${bar}<div class="recipe-preview">${(meal.strInstructions||'').substring(0,100)}...</div>${sug}</div>`;
+        <div class="match-bar"><div class="match-bar-fill"><div class="match-bar-fill-inner" style="width:${meal.pct}%;background:${barColor}"></div></div><span class="match-bar-label">${meal.matchCount}/${meal.totalUserIngs}</span></div>
+        <div class="recipe-preview">${(meal.strInstructions||'').substring(0,100)}...</div>
+        ${sug}
+      </div>`;
     grid.appendChild(card);
   });
 }
 
 // ===== MODAL =====
 function openModal(meal,ings){
-  const steps=(meal.strInstructions||'').split(/\r\n|\n/).filter(Boolean);
+  const steps=(meal.strInstructions||'').split(/\r\n|\n/).filter(s=>s.trim());
   const userIngs=[...new Set(ingredients.map(normalize))];
   const ingsH=ings.map(ig=>{
-    const m=userIngs.some(u=>{const l=ig.ingredient.toLowerCase();return l===u||l.includes(u)||u.includes(l);});
+    const m=userIngs.some(u=>ingredientMatch(u,ig.ingredient.toLowerCase())>=0.5);
     return`<li><span class="dot ${m?'match':''}"></span><span>${ig.ingredient}</span><span class="measure">${ig.measure}</span></li>`;
   }).join('');
 
   document.getElementById('modalContent').innerHTML=`
-    <div class="modal-header"><img src="${meal.strMealThumb}" alt="${meal.strMeal}"><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="modal-header"><img src="${meal.strMealThumb}" alt="${meal.strMeal}" onerror="this.style.display='none'"><button class="modal-close" onclick="closeModal()" aria-label="إغلاق">✕</button></div>
     <div class="modal-body"><h2>${meal.strMeal}</h2>
-      <div class="modal-meta"><span>📂 ${i18n[currentLang].category}: ${meal.strCategory||'-'}</span><span>🌍 ${i18n[currentLang].area}: ${meal.strArea||'-'}</span></div>
+      <div class="modal-meta"><span>📂 ${i18n[currentLang].category}: ${meal.strCategory||'-'}</span><span>🌍 ${i18n[currentLang].area}: ${meal.strArea||'-'}</span><span>🧾 ${ings.length} ${i18n[currentLang].ingCount}</span></div>
       <div class="modal-section"><h3>🧾 ${i18n[currentLang].ingredients}</h3><ul class="ingredient-list">${ingsH}</ul></div>
-      <div class="modal-section"><h3>📝 ${i18n[currentLang].steps}</h3><div class="instructions">${steps.map((s,i)=>`${i18n[currentLang].stepLabel} ${i+1}: ${s}`).join('\n\n')}</div></div>
-      ${meal.strYoutube?`<a href="${meal.strYoutube}" target="_blank" class="video-link">${i18n[currentLang].video} ▶</a>`:''}
-      ${meal.strSource?`<a href="${meal.strSource}" target="_blank" class="video-link" style="background:var(--secondary)">🔗 ${i18n[currentLang].source}</a>`:''}</div>`;
+      <div class="modal-section"><h3>📝 ${i18n[currentLang].steps}</h3><div class="instructions">${steps.map((s,i)=>`<strong>${i18n[currentLang].stepLabel} ${i+1}:</strong> ${s.trim()}`).join('\n\n')}</div></div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px">
+        ${meal.strYoutube?`<a href="${meal.strYoutube}" target="_blank" rel="noopener" class="video-link">${i18n[currentLang].video} ▶</a>`:''}
+        ${meal.strSource?`<a href="${meal.strSource}" target="_blank" rel="noopener" class="video-link" style="background:var(--secondary)">🔗 ${i18n[currentLang].source}</a>`:''}
+      </div></div>`;
   document.getElementById('modalOverlay').classList.add('show');
   document.body.style.overflow='hidden';
 }
@@ -544,6 +1001,9 @@ function closeModal(){document.getElementById('modalOverlay').classList.remove('
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 function showError(m){document.getElementById('errorText').textContent=m;document.getElementById('errorMsg').classList.add('show');}
 function hideError(){document.getElementById('errorMsg').classList.remove('show');}
+
+// ===== INIT =====
+renderQuickChips();
 </script>
 </body>
 </html>
