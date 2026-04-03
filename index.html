@@ -746,22 +746,63 @@ async function fetchJSON(url){
 
 // ===== SIMILARITY HELPERS =====
 function wordOverlap(a,b){
-  const wa=a.split(/\s+/),wb=b.split(/\s+/);
+  const wa=a.split(/\s+/).filter(w=>w.length>=2),wb=b.split(/\s+/).filter(w=>w.length>=2);
+  if(!wa.length||!wb.length)return 0;
   let hits=0;
   for(const x of wa)for(const y of wb){
-    if(x.length>=2&&y.length>=2&&(x===y||x.includes(y)||y.includes(x)))hits++;
+    if(x===y||x.includes(y)||y.includes(x))hits++;
   }
-  return hits/Math.max(wa.length,wb.length);
+  return hits/Math.min(wa.length,wb.length);
 }
+
+// Levenshtein distance for fuzzy matching
+function levenshtein(a,b){
+  if(a.length>b.length)[a,b]=[b,a];
+  const row=Array.from({length:a.length+1},(_,i)=>i);
+  for(let i=1;i<=b.length;i++){
+    let prev=i;
+    for(let j=1;j<=a.length;j++){
+      const val=b[i-1]===a[j-1]?row[j-1]:Math.min(row[j-1],prev,row[j])+1;
+      row[j-1]=prev;prev=val;
+    }
+    row[a.length]=prev;
+  }
+  return row[a.length];
+}
+function levenshteinSimilarity(a,b){
+  if(!a||!b)return 0;
+  if(a===b)return 1;
+  const maxLen=Math.max(a.length,b.length);
+  if(maxLen===0)return 1;
+  const dist=levenshtein(a,b);
+  return 1-dist/maxLen;
+}
+
 function ingredientMatch(userIng,mealIng){
   const u=userIng.toLowerCase().trim();
   const m=mealIng.toLowerCase().trim();
+  if(!u||!m)return 0;
+  
+  // Exact
   if(m===u)return 1;
+  
+  // One contains the other
   if(m.length>=3&&u.length>=3){
-    if(m.includes(u)||u.includes(m))return 0.9;
+    if(m.includes(u))return 0.95;
+    if(u.includes(m))return 0.9;
   }
+  
+  // Word overlap (for multi-word ingredients like "olive oil" vs "oil")
   const wo=wordOverlap(m,u);
-  if(wo>0.5)return 0.7*wo;
+  if(wo>=1)return 0.85;
+  if(wo>=0.5)return 0.6*wo;
+  
+  // Levenshtein fuzzy match (handles typos and close spellings)
+  if(u.length>=3&&m.length>=3){
+    const lev=levenshteinSimilarity(m,u);
+    if(lev>=0.7)return 0.7*lev;
+  }
+  
   return 0;
 }
 
@@ -778,7 +819,7 @@ async function searchRecipes(){
   const userIngs=[...new Set(ingredients.map(normalize))];
 
   try{
-    // PHASE 1: API search by each ingredient
+    // PHASE 1: Get ALL meals for each user ingredient from API
     const candidateMap=new Map();
     const apiPromises=userIngs.map(ing=>fetchJSON(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${encodeURIComponent(ing)}`));
     const apiResults=await Promise.all(apiPromises);
@@ -786,113 +827,130 @@ async function searchRecipes(){
       if(!data||!data.meals)return;
       data.meals.forEach(m=>{
         if(!candidateMap.has(m.idMeal)){
-          candidateMap.set(m.idMeal,{id:m.idMeal,thumb:m.strMealThumb,name:m.strMeal,apiHits:1,apiIngs:[userIngs[idx]]});
+          candidateMap.set(m.idMeal,{id:m.idMeal,thumb:m.strMealThumb,name:m.strMeal,hitCount:1});
         }else{
-          const ex=candidateMap.get(m.idMeal);
-          if(!ex.apiIngs.includes(userIngs[idx])){ex.apiHits++;ex.apiIngs.push(userIngs[idx]);}
+          candidateMap.get(m.idMeal).hitCount++;
         }
       });
     });
 
-    // PHASE 2: If few results from API, also try name search via categories
-    if(candidateMap.size<20){
-      const allCats=[...foodCats,'Dessert'];
-      const catResults=await Promise.all(allCats.map(c=>fetchJSON(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${c}`)));
-      catResults.forEach(data=>{
-        if(!data||!data.meals)return;
-        data.meals.forEach(m=>{
-          if(candidateMap.has(m.idMeal))return;
-          const name=m.strMeal.toLowerCase();
-          let nameHits=0;
-          for(const u of userIngs){
-            if(name.includes(u))nameHits++;
-          }
-          if(nameHits>0){
-            candidateMap.set(m.idMeal,{id:m.idMeal,thumb:m.strMealThumb,name:m.strMeal,apiHits:nameHits,apiIngs:userIngs.filter(u=>name.includes(u))});
-          }
-        });
-      });
-    }
-
     if(!candidateMap.size){
-      document.getElementById('loading').classList.remove('show');
-      btn.disabled=false;btn.classList.remove('loading');
-      document.getElementById('emptyState').style.display='block';
-      return;
+      // FALLBACK: Try searching by meal name instead
+      for(const u of userIngs){
+        const searchData=await fetchJSON(`https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(u)}`);
+        if(searchData&&searchData.meals){
+          searchData.meals.forEach(m=>{
+            if(!candidateMap.has(m.idMeal)){
+              candidateMap.set(m.idMeal,{id:m.idMeal,thumb:m.strMealThumb,name:m.strMeal,hitCount:2});
+            }
+          });
+        }
+      }
+      if(!candidateMap.size){
+        document.getElementById('loading').classList.remove('show');
+        btn.disabled=false;btn.classList.remove('loading');
+        document.getElementById('emptyState').style.display='block';
+        return;
+      }
     }
 
-    // PHASE 3: Fetch detailed info for top candidates
-    const sorted=[...candidateMap.entries()].sort((a,b)=>b[1].apiHits-a[1].apiHits).slice(0,60);
+    // PHASE 2: Fetch details ONLY for meals hit by 2+ user ingredients (or all if <5 candidates)
+    let fetchPool;
+    const multiHit=[...candidateMap.entries()].filter(([,v])=>v.hitCount>=2);
+    if(multiHit.length>=3){
+      fetchPool=multiHit;
+    }else{
+      fetchPool=[...candidateMap.entries()].sort((a,b)=>b[1].hitCount-a[1].hitCount).slice(0,40);
+    }
+
     const detailedMeals=[];
-    for(let i=0;i<sorted.length;i+=10){
-      const batch=sorted.slice(i,i+10);
+    for(let i=0;i<fetchPool.length;i+=10){
+      const batch=fetchPool.slice(i,i+10);
       const results=await Promise.all(batch.map(([id])=>fetchJSON(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)));
       results.forEach(d=>{if(d&&d.meals&&d.meals[0])detailedMeals.push(d.meals[0]);});
     }
 
-    // PHASE 4: Advanced scoring
+    // PHASE 3: STRICT scoring - what % of the RECIPE can you actually make?
     const scored=[];
     detailedMeals.forEach(meal=>{
-      // Extract meal ingredients
+      // Extract ALL meal ingredients (non-empty)
       const mealIngs=[];
       for(let i=1;i<=20;i++){
         const ing=meal[`strIngredient${i}`];
         const ms=meal[`strMeasure${i}`];
-        if(ing&&ing.trim()&&ing.trim().length>0)mealIngs.push({name:ing.trim().toLowerCase(),measure:(ms||'').trim()});
+        if(ing&&ing.trim()&&ing.trim().length>1)mealIngs.push({name:ing.trim().toLowerCase(),measure:(ms||'').trim()});
       }
       if(!mealIngs.length)return;
 
-      // Calculate match score
-      let totalScore=0;
-      const matchedUserIngs=[];
-      const matchedMealIngs=[];
+      // Common pantry items that are usually available
+      const pantryItems=['water','salt','oil','sugar','black pepper','pepper','butter','olive oil','vegetable oil',
+        'flour','eggs','egg','garlic','onion','butter','milk','baking powder','vanilla',
+        'cornstarch','vinegar','soy sauce','honey','tomato sauce'];
+      const realMealIngs=mealIngs.filter(mi=>!pantryItems.some(p=>mi.name===p));
+      const checkIngs=realMealIngs.length>=3?realMealIngs:mealIngs;
 
-      for(const u of userIngs){
-        let bestMatch=0;
-        let bestMealIng=null;
-        for(const mi of mealIngs){
+      // For each meal ingredient, find best user match
+      let matchScore=0;
+      const matchedMealIngs=[];
+      const matchedUserIngs=[];
+      const usedUserIngs=new Set();
+
+      for(const mi of checkIngs){
+        let bestScore=0;
+        let bestUser=null;
+        for(const u of userIngs){
+          if(usedUserIngs.has(u))continue;
           const s=ingredientMatch(u,mi.name);
-          if(s>bestMatch){bestMatch=s;bestMealIng=mi.name;}
+          if(s>bestScore){bestScore=s;bestUser=u;}
         }
-        if(bestMatch>=0.5){
-          totalScore+=bestMatch;
-          matchedUserIngs.push(u);
-          if(bestMealIng)matchedMealIngs.push(bestMealIng);
+        if(bestScore>=0.5){
+          matchScore+=bestScore;
+          matchedMealIngs.push(mi.name);
+          if(bestUser){matchedUserIngs.push(bestUser);usedUserIngs.add(bestUser);}
         }
       }
 
-      if(totalScore>0){
-        const pct=Math.round((matchedUserIngs.length/userIngs.length)*100);
-        const exact=matchedUserIngs.length===userIngs.length&&totalScore>=userIngs.length*0.9;
-        const missingCount=mealIngs.length-matchedMealIngs.length;
+      if(matchScore>0){
+        // KEY: Coverage = what % of the RECIPE you can make
+        const coverage=Math.round((matchedMealIngs.length/checkIngs.length)*100);
+        // User utilization = how many of YOUR ingredients were useful
+        const userUtil=Math.round((matchedUserIngs.length/userIngs.length)*100);
+        const missingIngs=checkIngs.length-matchedMealIngs.length;
+        const isExact=coverage>=90;
+        const isHigh=coverage>=70;
 
-        // Bonus for having fewer extra ingredients needed
-        const simplicityBonus=Math.max(0,1-(missingCount/15));
-
-        const finalScore=totalScore*(1+simplicityBonus*0.3);
+        // FINAL SCORE: heavily weight coverage, bonus for using more user ingredients
+        const finalScore=coverage*2+userUtil;
 
         scored.push({
           ...meal,
-          matchCount:matchedUserIngs.length,
+          matchCount:matchedMealIngs.length,
           matchedUserIngs,
           matchedMealIngs,
           totalUserIngs:userIngs.length,
-          isExact:exact,
-          pct,
+          totalMealIngs:checkIngs.length,
+          isExact,
+          isHigh,
+          coverage,
+          userUtil,
+          pct:coverage,
           totalScore:finalScore,
-          missingCount,
+          missingCount:missingIngs,
           mealIngCount:mealIngs.length
         });
       }
     });
 
-    scored.sort((a,b)=>{
+    // FILTER: Only show recipes where you can make at least 40% of it
+    const filtered=scored.filter(s=>s.coverage>=40);
+
+    filtered.sort((a,b)=>{
       if(a.isExact!==b.isExact)return b.isExact-a.isExact;
-      if(Math.abs(a.totalScore-b.totalScore)>0.5)return b.totalScore-a.totalScore;
-      return a.missingCount-b.missingCount;
+      if(a.isHigh!==b.isHigh)return b.isHigh-a.isHigh;
+      return b.totalScore-a.totalScore;
     });
 
-    allResults=scored.slice(0,50);
+    allResults=filtered.slice(0,30);
     document.getElementById('loading').classList.remove('show');
     btn.disabled=false;btn.classList.remove('loading');
 
@@ -912,10 +970,10 @@ function sortResults(){
   const v=document.getElementById('sortSelect').value;
   const sorted=[...allResults];
   if(v==='name')sorted.sort((a,b)=>a.strMeal.localeCompare(b.strMeal));
-  else if(v==='ingredients')sorted.sort((a,b)=>a.mealIngCount-b.mealIngCount);
+  else if(v==='ingredients')sorted.sort((a,b)=>a.missingCount-b.missingCount);
   else sorted.sort((a,b)=>{
     if(a.isExact!==b.isExact)return b.isExact-a.isExact;
-    return b.totalScore-a.totalScore;
+    return b.coverage-a.coverage;
   });
   renderResults(sorted,false);
 }
@@ -942,22 +1000,21 @@ function renderResults(meals,animate=true){
 
     let badge,badgeClass;
     if(meal.isExact){badge=i18n[currentLang].exactMatch;badgeClass='exact';}
-    else if(meal.pct>=75){badge=i18n[currentLang].highMatch;badgeClass='high';}
-    else if(meal.pct>=40){badge=i18n[currentLang].partialMatch;badgeClass='partial';}
-    else{badge=i18n[currentLang].lowMatch;badgeClass='low';}
+    else if(meal.coverage>=70){badge=i18n[currentLang].highMatch+' '+meal.coverage+'%';badgeClass='high';}
+    else if(meal.coverage>=50){badge=i18n[currentLang].partialMatch+' '+meal.coverage+'%';badgeClass='partial';}
+    else{badge=i18n[currentLang].lowMatch+' '+meal.coverage+'%';badgeClass='low';}
 
-    const barColor=meal.isExact?'var(--secondary)':meal.pct>=75?'#1976D2':meal.pct>=40?'var(--accent)':'#9E9E9E';
+    const barColor=meal.isExact?'var(--secondary)':meal.coverage>=70?'#1976D2':meal.coverage>=50?'var(--accent)':'#9E9E9E';
 
-    // Missing ingredients suggestion
+    // Missing ingredients - show what you still need
     let sug='';
-    if(!meal.isExact){
-      const mi=[];
-      for(let i=1;i<=20;i++){const ing=meal[`strIngredient${i}`];if(ing&&ing.trim())mi.push(ing.trim().toLowerCase());}
-      const miss=mi.filter(m=>!meal.matchedMealIngs.some(mm=>m===mm));
-      const missClean=miss.filter(m=>m.length>1&&!['',' ','water','salt','oil'].includes(m));
-      if(missClean.length>0&&missClean.length<=6){
-        sug=`<div class="suggest-box"><div class="suggest-title">💡 ${i18n[currentLang].addThis}</div><div class="suggest-text">${missClean.slice(0,5).map(m=>`<span class="highlight">${m}</span>`).join(' + ')}</div></div>`;
-      }
+    const mi=[];
+    for(let i=1;i<=20;i++){const ing=meal[`strIngredient${i}`];if(ing&&ing.trim())mi.push(ing.trim().toLowerCase());}
+    const miss=mi.filter(m=>!meal.matchedMealIngs.includes(m));
+    const pantrySkip=['water','salt','oil','sugar','black pepper','pepper'];
+    const missClean=miss.filter(m=>m.length>1&&!pantrySkip.includes(m));
+    if(missClean.length>0&&missClean.length<=8){
+      sug=`<div class="suggest-box"><div class="suggest-title">💡 ${i18n[currentLang].addThis} (${missClean.length})</div><div class="suggest-text">${missClean.slice(0,6).map(m=>`<span class="highlight">${m}</span>`).join(' + ')}</div></div>`;
     }
 
     card.innerHTML=`
@@ -966,9 +1023,8 @@ function renderResults(meals,animate=true){
       <div class="recipe-body">
         <span class="match-badge ${badgeClass}">${badge}</span>
         <div class="recipe-title">${meal.strMeal}</div>
-        <div class="recipe-tags">${meal.strCategory?`<span>${meal.strCategory}</span>`:''}${meal.strArea?`<span>${meal.strArea}</span>`:''}<span>${ings.length} ${i18n[currentLang].ingCount}</span></div>
-        <div class="match-bar"><div class="match-bar-fill"><div class="match-bar-fill-inner" style="width:${meal.pct}%;background:${barColor}"></div></div><span class="match-bar-label">${meal.matchCount}/${meal.totalUserIngs}</span></div>
-        <div class="recipe-preview">${(meal.strInstructions||'').substring(0,100)}...</div>
+        <div class="recipe-tags">${meal.strCategory?`<span>${meal.strCategory}</span>`:''}${meal.strArea?`<span>${meal.strArea}</span>`:''}<span>✅ ${meal.matchCount}/${meal.totalMealIngs}</span>${missClean.length?`<span style="color:#E65100">+${missClean.length} ناقص</span>`:''}</div>
+        <div class="match-bar"><div class="match-bar-fill"><div class="match-bar-fill-inner" style="width:${meal.coverage}%;background:${barColor}"></div></div><span class="match-bar-label">${meal.coverage}%</span></div>
         ${sug}
       </div>`;
     grid.appendChild(card);
