@@ -510,11 +510,184 @@ const aliases={
 // ===== AREA → CUISINE MAPPING =====
 const areaMap={
   'eastern':['Egyptian','Moroccan','Turkish','Syrian','Saudi Arabian','Tunisian','Algerian','Indian','Lebanese','Palestinian','Iraqi','Libyan','Sudanese','Omani','Yemeni','Emirati','Kuwaiti','Bahraini','Qatari'],
-  'western':['American','British','French','Italian','Spanish','Canadian','Dutch','Greek','Irish','Portuguese','Croatian','Polish','Norwegian','Russian','Ukrainian','Jamaican','Mexican','Argentinian','Australian','Kenyan','Vietnamese'],
-  'asian':['Chinese','Japanese','Thai','Vietnamese','Malaysian','Filipino','Indian']
+  'western':['American','British','French','Italian','Spanish','Canadian','Dutch','Greek','Irish','Portuguese','Croatian','Polish','Norwegian','Russian','Ukrainian','Jamaican','Mexican','Argentinian','Australian','Kenyan'],
+  'asian':['Chinese','Japanese','Thai','Vietnamese','Malaysian','Filipino']
 };
 const foodCats=['Beef','Chicken','Lamb','Pork','Seafood','Side','Starter','Breakfast','Goat','Vegan','Vegetarian','Pasta','Miscellaneous'];
 const dessertCats=['Dessert'];
+
+// ===== LOCAL EASTERN RECIPES DATABASE =====
+// عقلية ست البيت / الشيف الشربيني - وصفات شرقية عملية
+const localRecipes=[
+  // بطاطس
+  {name:'بطاطس بالصلصة',nameEn:'Potatoes in Tomato Sauce',area:'Egyptian',category:'Vegetarian',
+   ingredients:['potato','tomato','onion','garlic','oil','salt','cumin','coriander'],
+   instructions:'1. تقشر البطاطس وتقطع مكعبات وتقلى.\n2. يحمر البصل والثوم في الزيت.\n3. تضاف الطماطم المقطعة والتوابل.\n4. تضاف البطاطس وتُترك على نار هادئة 15 دقيقة.',
+   thumb:'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg'},
+  {name:'شوربة بطاطس',nameEn:'Potato Soup',area:'Egyptian',category:'Vegetarian',
+   ingredients:['potato','onion','butter','milk','salt','black pepper'],
+   instructions:'1. يُقطع البصل ويحمر في الزبدة.\n2. تُضاف البطاطس المقطعة والماء.\n3. تُترك حتى تنضج ثم تُهرس.\n4. يُضاف الحليب والتوابل.',
+   thumb:'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg'},
+  {name:'بطاطس بالفرن',nameEn:'Roasted Potatoes',area:'Egyptian',category:'Side',
+   ingredients:['potato','oil','salt','paprika','garlic'],
+   instructions:'1. تقطع البطاطس شرائح أو أرباع.\n2. تتبل بالزيت والملح والفلفل الأحمر والثوم.\n3. تُوضع في الفرن على 200 درجة حتى تصبح ذهبية.',
+   thumb:'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg'},
+  {name:'بطاطس مقلية',nameEn:'French Fries',area:'Egyptian',category:'Side',
+   ingredients:['potato','oil','salt'],
+   instructions:'1. تقشر البطاطس وتقطع أعواد.\n2. تقلى في زيت غزير حتى تصبح ذهبية.\n3. تُرش بالملح.',
+   thumb:'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg'},
+  {name:'مسقعة',nameEn:'Moussaka',area:'Egyptian',category:'Beef',
+   ingredients:['eggplant','tomato','onion','beef','garlic','oil','salt','cumin'],
+   instructions:'1. تقطع الباذنجان شرائح وتُقلى.\n2. يحمر اللحم المفروم مع البصل والثوم.\n3. تضاف الطماطم والتوابل.\n4. تُرص طبقات الباذنجان واللحم في الصينية وتُخبز.',
+   thumb:'https://www.themealdb.com/images/media/meals/ptwtyp1511303164.jpg'},
+  {name:'باتاتا بالصلصة (بطاطس بالطماطم)',nameEn:'Batata bil Salsa',area:'Egyptian',category:'Vegetarian',
+   ingredients:['potato','tomato','onion','oil','salt','garlic'],
+   instructions:'1. تُقطع البطاطس مكعبات صغيرة.\n2. يحمر البصل والثوم في الزيت.\n3. تُضاف الطماطم المفرومة وتُطهى حتى تصبح صلصة.\n4. تُضاف البطاطس وتُطهى حتى تنضج.',
+   thumb:'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg'},
+  {name:'تتبيلة بطاطس',nameEn:'Spiced Potatoes',area:'Egyptian',category:'Side',
+   ingredients:['potato','onion','tomato','garlic','oil','cumin','coriander','salt'],
+   instructions:'1. تُقلى البطاطس مكعبات.\n2. يحمر البصل والثوم.\n3. تضاف الطماطم والتوابل وتُطهى قليلاً.\n4. تُضاف البطاطس وتُقلب.',
+   thumb:'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg'},
+  // شوربات
+  {name:'شوربة عدس',nameEn:'Lentil Soup',area:'Egyptian',category:'Vegetarian',
+   ingredients:['lentil','onion','carrot','garlic','oil','salt','cumin','lemon'],
+   instructions:'1. يحمر البصل والجزر والثوم في الزيت.\n2. يُضاف العدس والماء.\n3. تُترك حتى تنضج ثم تُهرس.\n4. يُضاف عصر الليمون والكمون.',
+   thumb:'https://www.themealdb.com/images/media/meals/jtwwut1511303202.jpg'},
+  {name:'شوربة فراخ',nameEn:'Chicken Soup',area:'Egyptian',category:'Chicken',
+   ingredients:['chicken','onion','carrot','garlic','salt','rice'],
+   instructions:'1. يُسلق الدجاج مع البصل والجزر.\n2. يُزال اللحم ويُقطع.\n3. يُضاف الرز أو الشعيرة للمرق.\n4. يُعاد الدجاج.',
+   thumb:'https://www.themealdb.com/images/media/meals/jtwwut1511303202.jpg'},
+  // دجاج
+  {name:'دجاج بالفرن',nameEn:'Roasted Chicken',area:'Egyptian',category:'Chicken',
+   ingredients:['chicken','onion','garlic','lemon','oil','salt','paprika'],
+   instructions:'1. يتبل الدجاج بالثوم والليمون والتوابل.\n2. يُوضع في صينية مع البصل.\n3. يُخبز في الفرن حتى ينضج.',
+   thumb:'https://www.themealdb.com/images/media/meals/qrpwup1468233378.jpg'},
+  {name:'فتة دجاج',nameEn:'Fatta with Chicken',area:'Egyptian',category:'Chicken',
+   ingredients:['chicken','rice','bread','yogurt','garlic','vinegar','salt'],
+   instructions:'1. يُسلق الدجاج ويُحتفظ بالمرق.\n2. يُحضر الرز بالمرق.\n3. يُوضع الخبز المحمص في الصينية.\n4. يُضاف الرز والدجاج واللبن بالثوم.',
+   thumb:'https://www.themealdb.com/images/media/meals/qrpwup1468233378.jpg'},
+  // بيض
+  {name:'شكشوكة',nameEn:'Shakshuka',area:'Egyptian',category:'Breakfast',
+   ingredients:['egg','tomato','onion','garlic','oil','salt','cumin','pepper'],
+   instructions:'1. يحمر البصل والثوم في الزيت.\n2. تضاف الطماطم المفرومة والتوابل.\n3. تُصنع حفر وتُكسر البيض فيها.\n4. تُغطى حتى تنضج البيض.',
+   thumb:'https://www.themealdb.com/images/media/meals/g04t821581246452.jpg'},
+  {name:'بيض مسلوق',nameEn:'Boiled Eggs',area:'Egyptian',category:'Breakfast',
+   ingredients:['egg','salt'],
+   instructions:'1. تُوضع البيضات في ماء مغلي.\n2. تُترك 10-12 دقيقة للسلق الكامل.',
+   thumb:'https://www.themealdb.com/images/media/meals/g04t821581246452.jpg'},
+  {name:'أومليت',nameEn:'Omelette',area:'Egyptian',category:'Breakfast',
+   ingredients:['egg','butter','salt','pepper'],
+   instructions:'1. تُخفق البيضات مع الملح والفلفل.\n2. تُسخن الزبدة في المقلاة.\n3. تُسكب البيض وتُطهى حتى تتجمد.',
+   thumb:'https://www.themealdb.com/images/media/meals/g04t821581246452.jpg'},
+  // رز
+  {name:'رز مصري',nameEn:'Egyptian Rice',area:'Egyptian',category:'Side',
+   ingredients:['rice','oil','salt','vermicelli'],
+   instructions:'1. تحمر الشعيرة في الزيت.\n2. يُضاف الرز المغسول والماء والملح.\n3. يُغطى ويُطهى على نار هادئة.',
+   thumb:'https://www.themealdb.com/images/media/meals/kcv6hj1598733479.jpg'},
+  {name:'كشري',nameEn:'Koshari',area:'Egyptian',category:'Vegetarian',
+   ingredients:['rice','lentil','pasta','chickpeas','onion','tomato','garlic','vinegar','oil'],
+   instructions:'1. يُطهى الرز والعدس والمكرونة منفصلة.\n2. يُحمر البصل حتى يصبح ذهبياً.\n3. تُحضّر صلصة الطماطم بالثوم والخل.\n4. يُرص الكشري طبقات ويُضاف الصلصة.',
+   thumb:'https://www.themealdb.com/images/media/meals/kcv6hj1598733479.jpg'},
+  // لحوم
+  {name:'كفتة',nameEn:'Kofta',area:'Egyptian',category:'Beef',
+   ingredients:['beef','onion','parsley','salt','cumin'],
+   instructions:'1. يُفرم اللحم مع البصل والبقدونس.\n2. يُضاف التوابل ويُقلب جيداً.\n3. يُشكّل أصابع وتُشوى على الفحم أو في الفرن.',
+   thumb:'https://www.themealdb.com/images/media/meals/wuqsww1468250272.jpg'},
+  {name:'لحمة بالصلصة',nameEn:'Beef in Tomato Sauce',area:'Egyptian',category:'Beef',
+   ingredients:['beef','tomato','onion','garlic','oil','salt','cumin'],
+   instructions:'1. يُقطع اللحم قطع ويُحمر مع البصل والثوم.\n2. تضاف الطماطم والتوابل.\n3. يُضاف الماء ويُطهى على نار هادئة حتى ينضج.',
+   thumb:'https://www.themealdb.com/images/media/meals/wuqsww1468250272.jpg'},
+  {name:'مقلوبة',nameEn:'Maqluba',area:'Palestinian',category:'Chicken',
+   ingredients:['chicken','rice','eggplant','onion','garlic','oil','salt','cumin','turmeric'],
+   instructions:'1. يُقلى الباذنجان أو يُحمر.\n2. يُسلق الدجاج مع التوابل.\n3. تُرص طبقات: دجاج، باذنجان، رز.\n4. يُقلب بعد النضج.',
+   thumb:'https://www.themealdb.com/images/media/meals/qrpwup1468233378.jpg'},
+  {name:'ملوخية',nameEn:'Molokhia',area:'Egyptian',category:'Chicken',
+   ingredients:['chicken','molokhia','garlic','coriander','oil','salt','ghee'],
+   instructions:'1. يُسلق الدجاج ويُحفظ المرق.\n2. يُحمر الثوم والكزبرة في السمن.\n3. تُضاف الملوخية للمرق وتُطهى دقائق.',
+   thumb:'https://www.themealdb.com/images/media/meals/qrpwup1468233378.jpg'},
+  // سلطات
+  {name:'سلطة بلدي',nameEn:'Egyptian Salad',area:'Egyptian',category:'Vegetarian',
+   ingredients:['tomato','onion','cucumber','parsley','lemon','oil','salt'],
+   instructions:'1. تقطع الخضروات مكعبات صغيرة.\n2. يُضاف البقدونس المفروم.\n3. يتبل بعصير الليمون والزيت والملح.',
+   thumb:'https://www.themealdb.com/images/media/meals/hx335q1619789561.jpg'},
+  {name:'بابا غنوج',nameEn:'Baba Ganoush',area:'Lebanese',category:'Vegetarian',
+   ingredients:['eggplant','tahini','lemon','garlic','oil','salt'],
+   instructions:'1. يُشوى الباذنجان على النار حتى يطرى.\n2. يُهرس لب الباذنجان.\n3. يُضاف الطحينة والليمون والثوم والملح.',
+   thumb:'https://www.themealdb.com/images/media/meals/tkxquw1683229810.jpg'},
+  {name:'حمص',nameEn:'Hummus',area:'Lebanese',category:'Vegetarian',
+   ingredients:['chickpeas','tahini','lemon','garlic','oil','salt'],
+   instructions:'1. يُسلق الحمص حتى يطرى.\n2. يُهرس في الخلاط مع الطحينة.\n3. يُضاف الليمون والثوم والملح.\n4. يُزين بزيت الزيتون.',
+   thumb:'https://www.themealdb.com/images/media/meals/n3xxd91598732796.jpg'},
+  // معجنات
+  {name:'فلافل',nameEn:'Falafel',area:'Egyptian',category:'Vegetarian',
+   ingredients:['chickpeas','onion','parsley','garlic','cumin','salt','flour','oil'],
+   instructions:'1. ينقع الحمص طوال الليل.\n2. يُفرم مع البصل والبقدونس والثوم.\n3. يُضاف التوابل والدقيق.\n4. يُشكّل وُيقلى في زيت غزير.',
+   thumb:'https://www.themealdb.com/images/media/meals/n3xxd91598732796.jpg'},
+  // أسيوي
+  {name:'نودلز بالخضار',nameEn:'Vegetable Noodles',area:'Chinese',category:'Vegetarian',
+   ingredients:['noodles','carrot','onion','garlic','soy sauce','oil','salt'],
+   instructions:'1. تُسلق النودلز.\n2. تحمر الخضار في الزيت مع الثوم.\n3. تُضاف النودلز وصلصة الصويا.',
+   thumb:'https://www.themealdb.com/images/media/meals/1529444162.jpg'},
+  {name:'أرز مقلي',nameEn:'Fried Rice',area:'Chinese',category:'Vegetarian',
+   ingredients:['rice','egg','onion','carrot','soy sauce','oil','garlic'],
+   instructions:'1. يُطهى الأرز ويُترك ليبرد.\n2. تُخفق البيضة وتُحمر.\n3. تحمر الخضار.\n4. يُضاف الأرز وصلصة الصويا.',
+   thumb:'https://www.themealdb.com/images/media/meals/kcv6hj1598733479.jpg'},
+  // حلويات
+  {name:'أرز باللبن',nameEn:'Rice Pudding',area:'Egyptian',category:'Dessert',
+   ingredients:['rice','milk','sugar','vanilla'],
+   instructions:'1. يُسلق الرز في الماء.\n2. يُضاف الحليب والسكر.\n3. يُترك على نار هادئة حتى يتكاثف.\n4. يُضاف الفانيليا ويُبرّد.',
+   thumb:'https://www.themealdb.com/images/media/meals/02o81h1598734073.jpg'},
+  {name:'مهلبية',nameEn:'Muhallabia',area:'Egyptian',category:'Dessert',
+   ingredients:['milk','sugar','rice','rose water'],
+   instructions:'1. يُغلى الحليب مع السكر.\n2. يُضاف النشا المذاب في حليب بارد.\n3. يُقلب حتى يتكاثف.\n4. يُضاف ماء الورد ويُبرّد.',
+   thumb:'https://www.themealdb.com/images/media/meals/02o81h1598734073.jpg'},
+  {name:'كنافة',nameEn:'Kunafa',area:'Egyptian',category:'Dessert',
+   ingredients:['vermicelli','butter','sugar','cream','rose water'],
+   instructions:'1. يُسخن الزبدة وتُضاف الشعيرة.\n2. تُوضع نصف الكمية في الصينية.\n3. تُضاف القشطة.\n4. تُوضع الشعيرة المتبقية وتُخبز.',
+   thumb:'https://www.themealdb.com/images/media/meals/02o81h1598734073.jpg'},
+  {name:'أم علي',nameEn:'Om Ali',area:'Egyptian',category:'Dessert',
+   ingredients:['bread','milk','sugar','coconut','almond','raisin'],
+   instructions:'1. يُفتت الخبز ويُحمص.\n2. يُغلى الحليب مع السكر.\n3. يُصب الحليب على الخبز.\n4. يُزين بالمكسرات ويُخبز.',
+   thumb:'https://www.themealdb.com/images/media/meals/02o81h1598734073.jpg'},
+  // إضافات
+  {name:'محشي ورق عنب',nameEn:'Stuffed Grape Leaves',area:'Egyptian',category:'Vegetarian',
+   ingredients:['rice','onion','tomato','parsley','oil','lemon','salt'],
+   instructions:'1. يُحضر حشوة الرز مع الطماطم والبقدونس والبصل.\n2. تُلف ورق العنب بالحشوة.\n3. يُطهى في مرق مع عصر ليمون.',
+   thumb:'https://www.themealdb.com/images/media/meals/kcv6hj1598733479.jpg'},
+  {name:'محشي كوسة',nameEn:'Stuffed Zucchini',area:'Egyptian',category:'Vegetarian',
+   ingredients:['zucchini','rice','onion','tomato','oil','salt','cumin'],
+   instructions:'1. تُفرغ الكوسات من الداخل.\n2. يُحضر حشوة الرز والطماطم.\n3. تُحشى الكوسات وتُطهى في الصلصة.',
+   thumb:'https://www.themealdb.com/images/media/meals/kcv6hj1598733479.jpg'},
+  {name:'فول مدمس',nameEn:'Ful Medames',area:'Egyptian',category:'Breakfast',
+   ingredients:['fava beans','lemon','garlic','oil','salt','cumin'],
+   instructions:'1. يُسلق الفول حتى يطرى.\n2. يُهرس قليلاً مع ملعقة من مرقه.\n3. يُضاف الليمون والثوم والكمون والزيت.',
+   thumb:'https://www.themealdb.com/images/media/meals/n3xxd91598732796.jpg'},
+  {name:'طعمية',nameEn:'Taameya (Egyptian Falafel)',area:'Egyptian',category:'Breakfast',
+   ingredients:['fava beans','onion','parsley','coriander','garlic','cumin','salt','flour','oil'],
+   instructions:'1. ينقع الفول طوال الليل.\n2. يُفرم مع البقدونس والكزبرة والبصل.\n3. يُضاف التوابل والطحين.\n4. يُشكّل أقراص وتُقلى.',
+   thumb:'https://www.themealdb.com/images/media/meals/n3xxd91598732796.jpg'},
+  {name:'تبولة',nameEn:'Tabbouleh',area:'Lebanese',category:'Vegetarian',
+   ingredients:['parsley','bulgur','tomato','onion','lemon','oil','salt','mint'],
+   instructions:'1. ينقع البرغل قليلاً.\n2. يُفرم البقدونس والنعناع ناعماً.\n3. تُقطع الطماطم والبصل.\n4. يتبل بالليمون والزيت والملح.',
+   thumb:'https://www.themealdb.com/images/media/meals/hx335q1619789561.jpg'},
+  {name:'فتوش',nameEn:'Fattoush',area:'Lebanese',category:'Vegetarian',
+   ingredients:['bread','tomato','cucumber','lettuce','radish','lemon','oil','sumac'],
+   instructions:'1. يُحمص الخبز ويُكسر.\n2. تقطع الخضروات.\n3. يتبل بالليمون والزيت والسماق.',
+   thumb:'https://www.themealdb.com/images/media/meals/hx335q1619789561.jpg'},
+  {name:'سمبوسة',nameEn:'Sambousa',area:'Egyptian',category:'Starter',
+   ingredients:['flour','beef','onion','garlic','oil','salt','cumin'],
+   instructions:'1. يُحضر عجينة الطحين.\n2. يحمر اللحم المفروم مع البصل والتوابل.\n3. تُحشى العجينة وتُقلى.',
+   thumb:'https://www.themealdb.com/images/media/meals/wuqsww1468250272.jpg'},
+  // غربي شائع
+  {name:'باستا بالصلصة',nameEn:'Pasta with Sauce',area:'Italian',category:'Pasta',
+   ingredients:['pasta','tomato','onion','garlic','oil','salt','basil'],
+   instructions:'1. تُسلق المكرونة.\n2. يحمر البصل والثوم.\n3. تضاف الطماطم والريحان.\n4. تُضاف المكرونة وتُقلب.',
+   thumb:'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg'},
+  {name:'بيتزا',nameEn:'Pizza',area:'Italian',category:'Vegetarian',
+   ingredients:['flour','tomato','cheese','oil','salt','yeast'],
+   instructions:'1. يُحضّر العجين من الطحين والخميرة.\n2. تفرد وتُدهن بصلصة الطماطم.\n3. تُضاف الجبنة وتُخبز.',
+   thumb:'https://www.themealdb.com/images/media/meals/x0lk931587671540.jpg'},
+];
 
 // ===== QUICK SUGGESTIONS =====
 const quickIngredients={
@@ -817,9 +990,78 @@ async function searchRecipes(){
   btn.disabled=true;btn.classList.add('loading');
 
   const userIngs=[...new Set(ingredients.map(normalize))];
+  // مكونات أساسية ست البيت دايماً معاها
+  const pantry=['water','salt','oil','sugar','black pepper','pepper','butter','olive oil',
+    'flour','egg','garlic','onion','milk','baking powder','vanilla','cornstarch','vinegar',
+    'soy sauce','honey','cumin','paprika','turmeric'];
 
   try{
-    // PHASE 1: Get ALL meals for each user ingredient from API
+    const scored=[];
+
+    // ===== PHASE 1: SEARCH LOCAL RECIPES (ست البيت) =====
+    localRecipes.forEach(recipe=>{
+      // Cuisine filter
+      if(currentCuisine!=='all'){
+        const allowed=areaMap[currentCuisine]||[];
+        if(!allowed.includes(recipe.area))return;
+      }
+      // Category filter
+      if(currentCategory==='dessert'&&recipe.category!=='Dessert')return;
+      if(currentCategory==='food'&&recipe.category==='Dessert')return;
+
+      const recipeIngs=recipe.ingredients.map(i=>i.toLowerCase());
+      const allAvailable=[...userIngs,...pantry]; // مكوناتك + المطبخ
+
+      let matchedIngs=[];
+      let matchedUserIngs=[];
+      const usedUserIngs=new Set();
+
+      for(const ri of recipeIngs){
+        let bestScore=0;
+        let bestUser=null;
+        for(const u of allAvailable){
+          if(usedUserIngs.has(u))continue;
+          const s=ingredientMatch(u,ri);
+          if(s>bestScore){bestScore=s;bestUser=u;}
+        }
+        if(bestScore>=0.5){
+          matchedIngs.push(ri);
+          if(bestUser&&!pantry.includes(bestUser)){
+            matchedUserIngs.push(bestUser);
+            usedUserIngs.add(bestUser);
+          }
+        }
+      }
+
+      const coverage=Math.round((matchedIngs.length/recipeIngs.length)*100);
+      if(coverage>=50){
+        scored.push({
+          strMeal:recipe.name,
+          strMealThumb:recipe.thumb,
+          strCategory:recipe.category,
+          strArea:recipe.area,
+          strInstructions:recipe.instructions,
+          strYoutube:'',
+          strSource:'',
+          matchCount:matchedIngs.length,
+          matchedUserIngs,
+          matchedMealIngs:matchedIngs,
+          totalUserIngs:userIngs.length,
+          totalMealIngs:recipeIngs.length,
+          isExact:coverage>=90,
+          isHigh:coverage>=70,
+          coverage,
+          userUtil:Math.round((matchedUserIngs.length/userIngs.length)*100),
+          pct:coverage,
+          totalScore:coverage*2+Math.round((matchedUserIngs.length/userIngs.length)*100),
+          missingCount:recipeIngs.length-matchedIngs.length,
+          mealIngCount:recipeIngs.length,
+          isLocal:true
+        });
+      }
+    });
+
+    // ===== PHASE 2: SEARCH API =====
     const candidateMap=new Map();
     const apiPromises=userIngs.map(ing=>fetchJSON(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${encodeURIComponent(ing)}`));
     const apiResults=await Promise.all(apiPromises);
@@ -834,128 +1076,116 @@ async function searchRecipes(){
       });
     });
 
+    // Fallback: name search
     if(!candidateMap.size){
-      // FALLBACK: Try searching by meal name instead
       for(const u of userIngs){
-        const searchData=await fetchJSON(`https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(u)}`);
-        if(searchData&&searchData.meals){
-          searchData.meals.forEach(m=>{
-            if(!candidateMap.has(m.idMeal)){
-              candidateMap.set(m.idMeal,{id:m.idMeal,thumb:m.strMealThumb,name:m.strMeal,hitCount:2});
-            }
-          });
-        }
-      }
-      if(!candidateMap.size){
-        document.getElementById('loading').classList.remove('show');
-        btn.disabled=false;btn.classList.remove('loading');
-        document.getElementById('emptyState').style.display='block';
-        return;
-      }
-    }
-
-    // PHASE 2: Fetch details ONLY for meals hit by 2+ user ingredients (or all if <5 candidates)
-    let fetchPool;
-    const multiHit=[...candidateMap.entries()].filter(([,v])=>v.hitCount>=2);
-    if(multiHit.length>=3){
-      fetchPool=multiHit;
-    }else{
-      fetchPool=[...candidateMap.entries()].sort((a,b)=>b[1].hitCount-a[1].hitCount).slice(0,40);
-    }
-
-    const detailedMeals=[];
-    for(let i=0;i<fetchPool.length;i+=10){
-      const batch=fetchPool.slice(i,i+10);
-      const results=await Promise.all(batch.map(([id])=>fetchJSON(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)));
-      results.forEach(d=>{if(d&&d.meals&&d.meals[0])detailedMeals.push(d.meals[0]);});
-    }
-
-    // PHASE 3: STRICT scoring - what % of the RECIPE can you actually make?
-    const scored=[];
-    detailedMeals.forEach(meal=>{
-      // Extract ALL meal ingredients (non-empty)
-      const mealIngs=[];
-      for(let i=1;i<=20;i++){
-        const ing=meal[`strIngredient${i}`];
-        const ms=meal[`strMeasure${i}`];
-        if(ing&&ing.trim()&&ing.trim().length>1)mealIngs.push({name:ing.trim().toLowerCase(),measure:(ms||'').trim()});
-      }
-      if(!mealIngs.length)return;
-
-      // Common pantry items that are usually available
-      const pantryItems=['water','salt','oil','sugar','black pepper','pepper','butter','olive oil','vegetable oil',
-        'flour','eggs','egg','garlic','onion','butter','milk','baking powder','vanilla',
-        'cornstarch','vinegar','soy sauce','honey','tomato sauce'];
-      const realMealIngs=mealIngs.filter(mi=>!pantryItems.some(p=>mi.name===p));
-      const checkIngs=realMealIngs.length>=3?realMealIngs:mealIngs;
-
-      // For each meal ingredient, find best user match
-      let matchScore=0;
-      const matchedMealIngs=[];
-      const matchedUserIngs=[];
-      const usedUserIngs=new Set();
-
-      for(const mi of checkIngs){
-        let bestScore=0;
-        let bestUser=null;
-        for(const u of userIngs){
-          if(usedUserIngs.has(u))continue;
-          const s=ingredientMatch(u,mi.name);
-          if(s>bestScore){bestScore=s;bestUser=u;}
-        }
-        if(bestScore>=0.5){
-          matchScore+=bestScore;
-          matchedMealIngs.push(mi.name);
-          if(bestUser){matchedUserIngs.push(bestUser);usedUserIngs.add(bestUser);}
-        }
-      }
-
-      if(matchScore>0){
-        // KEY: Coverage = what % of the RECIPE you can make
-        const coverage=Math.round((matchedMealIngs.length/checkIngs.length)*100);
-        // User utilization = how many of YOUR ingredients were useful
-        const userUtil=Math.round((matchedUserIngs.length/userIngs.length)*100);
-        const missingIngs=checkIngs.length-matchedMealIngs.length;
-        const isExact=coverage>=90;
-        const isHigh=coverage>=70;
-
-        // FINAL SCORE: heavily weight coverage, bonus for using more user ingredients
-        const finalScore=coverage*2+userUtil;
-
-        scored.push({
-          ...meal,
-          matchCount:matchedMealIngs.length,
-          matchedUserIngs,
-          matchedMealIngs,
-          totalUserIngs:userIngs.length,
-          totalMealIngs:checkIngs.length,
-          isExact,
-          isHigh,
-          coverage,
-          userUtil,
-          pct:coverage,
-          totalScore:finalScore,
-          missingCount:missingIngs,
-          mealIngCount:mealIngs.length
+        const sd=await fetchJSON(`https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(u)}`);
+        if(sd&&sd.meals)sd.meals.forEach(m=>{
+          if(!candidateMap.has(m.idMeal))candidateMap.set(m.idMeal,{id:m.idMeal,thumb:m.strMealThumb,name:m.strMeal,hitCount:2});
         });
       }
-    });
+    }
 
-    // FILTER: Only show recipes where you can make at least 40% of it
-    const filtered=scored.filter(s=>s.coverage>=40);
+    if(candidateMap.size){
+      // Prioritize multi-hit meals
+      let fetchPool=[...candidateMap.entries()].sort((a,b)=>b[1].hitCount-a[1].hitCount).slice(0,50);
+      const detailedMeals=[];
+      for(let i=0;i<fetchPool.length;i+=10){
+        const batch=fetchPool.slice(i,i+10);
+        const results=await Promise.all(batch.map(([id])=>fetchJSON(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)));
+        results.forEach(d=>{if(d&&d.meals&&d.meals[0])detailedMeals.push(d.meals[0]);});
+      }
 
-    filtered.sort((a,b)=>{
+      detailedMeals.forEach(meal=>{
+        // Cuisine filter
+        if(currentCuisine!=='all'){
+          const allowed=areaMap[currentCuisine]||[];
+          if(meal.strArea&&!allowed.includes(meal.strArea))return;
+        }
+        // Category filter
+        if(currentCategory==='dessert'&&meal.strCategory!=='Dessert')return;
+        if(currentCategory==='food'&&meal.strCategory==='Dessert')return;
+
+        const mealIngs=[];
+        for(let i=1;i<=20;i++){
+          const ing=meal[`strIngredient${i}`];
+          const ms=meal[`strMeasure${i}`];
+          if(ing&&ing.trim()&&ing.trim().length>1)mealIngs.push({name:ing.trim().toLowerCase(),measure:(ms||'').trim()});
+        }
+        if(!mealIngs.length)return;
+
+        const allAvailable=[...userIngs,...pantry];
+        let matchScore=0;
+        const matchedMealIngs=[];
+        const matchedUserIngs=[];
+        const usedUserIngs=new Set();
+
+        for(const mi of mealIngs){
+          let bestScore=0;
+          let bestUser=null;
+          for(const u of allAvailable){
+            if(usedUserIngs.has(u))continue;
+            const s=ingredientMatch(u,mi.name);
+            if(s>bestScore){bestScore=s;bestUser=u;}
+          }
+          if(bestScore>=0.5){
+            matchScore+=bestScore;
+            matchedMealIngs.push(mi.name);
+            if(bestUser&&!pantry.includes(bestUser)){matchedUserIngs.push(bestUser);usedUserIngs.add(bestUser);}
+          }
+        }
+
+        if(matchScore>0){
+          const coverage=Math.round((matchedMealIngs.length/mealIngs.length)*100);
+          const userUtil=Math.round((matchedUserIngs.length/userIngs.length)*100);
+          const missingIngs=mealIngs.length-matchedMealIngs.length;
+
+          if(coverage>=50){
+            scored.push({
+              ...meal,
+              matchCount:matchedMealIngs.length,
+              matchedUserIngs,
+              matchedMealIngs,
+              totalUserIngs:userIngs.length,
+              totalMealIngs:mealIngs.length,
+              isExact:coverage>=90,
+              isHigh:coverage>=70,
+              coverage,
+              userUtil,
+              pct:coverage,
+              totalScore:coverage*2+userUtil,
+              missingCount:missingIngs,
+              mealIngCount:mealIngs.length,
+              isLocal:false
+            });
+          }
+        }
+      });
+    }
+
+    // Deduplicate by name (local recipes take priority)
+    const seen=new Set();
+    const deduped=[];
+    scored.sort((a,b)=>{
+      if(a.isLocal!==b.isLocal)return b.isLocal-a.isLocal; // local first
       if(a.isExact!==b.isExact)return b.isExact-a.isExact;
       if(a.isHigh!==b.isHigh)return b.isHigh-a.isHigh;
-      return b.totalScore-a.totalScore;
+      return b.coverage-a.coverage;
     });
+    for(const s of scored){
+      const key=s.strMeal.toLowerCase();
+      if(!seen.has(key)){seen.add(key);deduped.push(s);}
+    }
 
-    allResults=filtered.slice(0,30);
+    allResults=deduped.slice(0,30);
     document.getElementById('loading').classList.remove('show');
     btn.disabled=false;btn.classList.remove('loading');
 
-    if(!allResults.length){document.getElementById('emptyState').style.display='block';}
-    else{renderResults(allResults);}
+    if(!allResults.length){
+      document.getElementById('emptyState').style.display='block';
+    }else{
+      renderResults(allResults);
+    }
 
   }catch(err){
     document.getElementById('loading').classList.remove('show');
